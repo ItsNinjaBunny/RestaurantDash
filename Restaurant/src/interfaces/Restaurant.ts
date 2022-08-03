@@ -1,4 +1,4 @@
-import item from './item'
+import item from './Item'
 import coupon from './Coupon';
 
 export default interface Restaurant {
