@@ -1,9 +1,9 @@
 import { ObjectId } from "mongodb";
-import ingrident from './Ingrident'
+import ingredient from './Ingredient'
 
 export default interface Item_Menu {
     _id : ObjectId,
     dish_name : string;
-    ingridents : ingrident[],
+    ingridents : ingredient[],
     price: number;
 }
