@@ -81,4 +81,8 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
     });
 }
 
-export default { login, register_account, }
+const getAllUsers = async(req: Request, res: Response): Promise<Response> => {
+    return res.status(200).json(await database.getAllUsers());
+}
+
+export default { login, register_account, getAllUsers }

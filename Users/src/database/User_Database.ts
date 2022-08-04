@@ -25,6 +25,11 @@ const login = async(credentials : login) => {
     return result;
 }
 
+const getAllUsers = async(): Promise<user[]> => {
+    return await collection.user.find({}).project({ _id : 1, name : 1, email : 1, location : 1}).toArray() as user[];
+}
+
+
 export const containsToken = async(token: string) => {
     const results = await collection.tokens.find({ _id : token }).toArray();
     return results.length === 0 ? false : true;
@@ -37,4 +42,4 @@ export const getEmail = async(email: string): Promise<boolean> => {
     return results.length > 0 ? true : false;
 }
 
-export default { register, login };
+export default { register, login, getAllUsers };

@@ -5,8 +5,7 @@ const router = Router();
 
 router.post('/login', controller.login);
 router.post('/register-account', controller.register_account);
-router.get('/', (req: Request, res: Response) => {
-    res.send('hi');
-})
+
+router.get('/get-users', controller.getAllUsers);
 
 export = router;
