@@ -3,7 +3,7 @@ import { user, init } from '../interfaces/User';
 import bcrypt from 'bcrypt';
 import config from '../config/config';
 import jwt from 'jsonwebtoken';
-import database from '../database/User_Database';
+import database, { getEmail } from '../database/User_Database';
 import login from '../interfaces/Login';
 import license from '../interfaces/License';
 import { request } from '../helpers/request';
@@ -45,6 +45,10 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
             temp
         });
     const account = await init(req.body as user);
+    if(await getEmail(account.email))
+        return res.status(500).json({
+            error: 'existing email'
+        });
     const key = req.body.license.key;
     const response = await request('http://localhost:3001/keys', 'get', {
         data : { key : key}

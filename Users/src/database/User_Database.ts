@@ -30,4 +30,11 @@ export const containsToken = async(token: string) => {
     return results.length === 0 ? false : true;
 }
 
+export const getEmail = async(email: string): Promise<boolean> => {
+    console.log(String(new RegExp(email, 'i')));
+    const results = await collection.user.find({ email : { $regex : email, $options : '$i' }}).toArray();
+    console.log(results);
+    return results.length > 0 ? true : false;
+}
+
 export default { register, login };
