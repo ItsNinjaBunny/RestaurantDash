@@ -1,13 +1,13 @@
-import { ListCollectionsCursor, MongoClient } from 'mongodb';
-import config from '../config/config';
+import { MongoClient } from 'mongodb';
+import { mongo } from '../config/config';
 import { user } from '../interfaces/User';
 import login from '../interfaces/Login';
 
-const client = new MongoClient(config.mongo.url);
-const db = client.db(config.mongo.database);
+const client = new MongoClient(mongo.url);
+const db = client.db(mongo.database);
 const collection = { 
-    user : db.collection(config.mongo.collections.users),
-    tokens : db.collection(config.mongo.collections.tokens)
+    user : db.collection(mongo.collections.users),
+    tokens : db.collection(mongo.collections.tokens)
 };
 
 const register = async(user: user) => {

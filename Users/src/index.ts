@@ -1,9 +1,9 @@
 import express, { application, Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import config from './config/config';
+import { server } from './config/config';
 import cors from 'cors';
 import routes from './routes/user_routes';
-const port = config.server.port;
+const port = server.port;
 
 const app = express();
 

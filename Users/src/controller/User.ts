@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { user, init } from '../interfaces/User';
 import bcrypt from 'bcrypt';
-import config from '../config/config';
+import { server } from '../config/config';
 import jwt from 'jsonwebtoken';
 import database, { getEmail } from '../database/User_Database';
 import login from '../interfaces/Login';
@@ -23,7 +23,7 @@ const login = async(req: Request, res: Response): Promise<Response> => {
     if(credentials.password === temp.password) {
         const token = jwt.sign({
             id : credentials.id},
-            config.server.secret,
+            server.secret,
             { expiresIn : 100 * 100 }
         );
     
@@ -47,11 +47,11 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
     const account = await init(req.body as user);
     if(await getEmail(account.email))
         return res.status(500).json({
-            error: 'existing email'
+            error: 'email already exists'
         });
     const key = req.body.license.key;
     const response = await request('http://localhost:3001/keys', 'get', {
-        data : { key : key}
+        data : { key : key, secret : server.secret }
     });
     if(key === undefined)
         account.license.type = 'personal'
