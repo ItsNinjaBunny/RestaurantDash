@@ -5,6 +5,8 @@ import config from '../config/config';
 import jwt from 'jsonwebtoken';
 import database from '../database/User_Database';
 import login from '../interfaces/Login';
+import license from '../interfaces/License';
+import { request } from '../helpers/request';
 
 const login = async(req: Request, res: Response): Promise<Response> => {
     let temp = req.body as login;
@@ -43,15 +45,35 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
             temp
         });
     const account = await init(req.body as user);
-    const key = req.body.key;
+    const key = req.body.license.key;
+    const response = await request('http://localhost:3001/keys', 'get', {
+        data : { key : key}
+    });
     if(key === undefined)
-        account.type.type = 'personal'
-    account.type.key = key;
+        account.license.type = 'personal'
+    if(key !== undefined) {
+        if(response !== undefined) {
+            const results = response.data as license[];
+            for(let i = 0; i < results.length; i++) {
+                if(results[i].key === key) {
+                    account.license.key = results[i].key;
+                    account.license.restaurant = results[i].restaurant;
+                    account.license.type = 'business';
+                    break;
+                }
+            }
+            if(account.license.key === undefined)
+                return res.status(500).json({
+                    error : 'no matching key',
+                    key
+                });
+        }
+    }
     
     account.password = await bcrypt.hash(account.password, 10);
     await database.register(account);
     return res.status(200).json({
-        url : 'http://192.168.1.2:5000/Home'
+        url : 'http://192.168.1.2:5000/Home',
     });
 }
 

@@ -8,7 +8,7 @@ export interface user {
     name : string;
     email : string;
     password : string;
-    type : license
+    license : license
     coupons : coupon[];
     cart : {
         basket : item[];
@@ -26,8 +26,8 @@ export const init = async(options?: Partial<user>) => {
         name : options?.name,
         email : options?.email,
         password : options?.password,
-        type : {
-            type : options?.type?.key === undefined ? 'personal' : 'business'
+        license : {
+            type : options?.license?.key === undefined ? 'personal' : 'business'
         },
         coupons : [],
         cart : {

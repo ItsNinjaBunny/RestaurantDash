@@ -11,6 +11,6 @@ export const mongo = {
     url : String(process.env.mongo_url),
     database : String(process.env.mongo_database),
     collections : {
-        keys : String(process.env.mongo_collection_keys)
+        licenses : String(process.env.mongo_collection_licenses)
     }
 }
