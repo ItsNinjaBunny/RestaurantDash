@@ -9,6 +9,7 @@ import license from '../interfaces/License';
 import { request } from '../helpers/request';
 
 const login = async(req: Request, res: Response): Promise<Response> => {
+    // console.log('endpoint hit');
     let temp = req.body as login;
 
     if(Object.keys(temp).length === 0)
@@ -40,7 +41,8 @@ const login = async(req: Request, res: Response): Promise<Response> => {
 }
 
 const register_account = async(req: Request, res: Response): Promise<Response> => {
-    let temp: user = req.body;
+    let temp = req.body as user;
+    console.log('items:', temp);
     if(Object.keys(temp).length === 0)
     return res.status(500).json({
         error : 'no data was sent',
@@ -48,16 +50,16 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
     });
     const account = await init(req.body as user);
     if(await getEmail(account.email))
-    return res.status(500).json({
-        error: 'email already exists'
-    });
+        return res.status(500).json({
+            error: 'email already exists'
+        });
     const key = req.body.license.key;
     const response = await request('http://localhost:3001/keys', 'get', {
         data : { key : key, secret : server.secret }
     });
-    if(key === undefined)
-    account.license.type = 'personal'
-    if(key !== undefined) {
+    if(key === '')
+        account.license.type = 'personal'
+    if(key !== '') {
         if(response !== undefined) {
             const results = response.data as license[];
             for(let i = 0; i < results.length; i++) {
@@ -69,17 +71,19 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
                 }
             }
             if(account.license.key === undefined)
-            return res.status(500).json({
-                error : 'no matching key',
-                key
-            });
+                return res.status(500).json({
+                    error : 'no matching key',
+                    key
+                });
         }
     }
     
+    console.log(account);
     account.password = await bcrypt.hash(account.password, 10);
     await database.register(account);
     return res.status(200).json({
         url : 'http://192.168.1.2:5000/Home',
+        account
     });
 }
 

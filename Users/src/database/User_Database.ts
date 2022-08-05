@@ -19,8 +19,7 @@ const register = async(user: user) => {
 
 const login = async(credentials : login) => {
     await client.connect();
-
-    const result =  await collection.user.findOne({ email: new RegExp(credentials.username, 'i') },
+    const result =  await collection.user.findOne({ email: String(new RegExp(credentials.username, 'i')) },
         { projection: { _id : 1, email: 1, password : 1, license : 1 } }) as unknown as login;
     client.close();
     return result;
@@ -42,7 +41,7 @@ export const containsToken = async(token: string) => {
 
 export const getEmail = async(email: string): Promise<boolean> => {
     await client.connect();
-    const results = await collection.user.find({ email : { $regex : email, $options : '$i' }}).toArray();
+    const results = await collection.user.find({ email : { $regex : String(email), $options : '$i' }}).toArray();
     client.close();
     return results.length > 0 ? true : false;
 }

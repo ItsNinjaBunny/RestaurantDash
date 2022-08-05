@@ -5,7 +5,7 @@ import { verify } from '../middleware/verify';
 const router = Router();
 
 router.post('/login', controller.login);
-router.post('/register-account', controller.register_account);
+router.post('/register', controller.register_account);
 
 router.get('/get-users', verify, controller.getAllUsers);
 router.get('/token', controller.getToken);
