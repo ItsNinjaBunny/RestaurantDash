@@ -1,0 +1,27 @@
+version: '3.8'
+
+networks:
+  dash:
+    external:
+      false
+
+services:
+  inventory_management:
+    image: mysql:5.7
+    platform: linux/x86_64
+    restart: always
+    volumes:
+      - inventory:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE : Inventory
+      MYSQL_USER : admin
+      MYSQL_PASSWORD : admin
+      MYSQL_ROOT_PASSWORD : root
+    networks:
+      - dash
+    ports:
+      - 3306:3306
+    command: mysqld
+
+volumes:
+  inventory:
