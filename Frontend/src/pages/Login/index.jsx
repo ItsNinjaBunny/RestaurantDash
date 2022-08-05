@@ -26,7 +26,7 @@ const BoxContainer = styled(motion.div)`
       position: relative;
       left:5rem;
       overflow: hidden;
-      top:12rem; 
+      top:12vw; 
       opacity:1;
       transition:0.5s;
      
@@ -47,7 +47,7 @@ const BoxContainer = styled(motion.div)`
       position: absolute;
       left:14rem;
       overflow: hidden;
-      top:15.8rem;
+      top:12vw;
       transition:1s;
       opacity:1;
      
@@ -67,7 +67,7 @@ const BoxContainer = styled(motion.div)`
       position: absolute;
       left:65vw;    
       overflow: hidden;
-      top:11rem;
+      top:9vw;
       transition:.7s;
     
       `;
@@ -97,7 +97,7 @@ const Landing = styled.div`
     //background-color:#0f2125;
     background:url(https://wallpaperaccess.com/full/3112895.jpg);
     opacity;.8;
-    height:60rem;
+    height:100%;
     position:fixed;
     top:0;
     width:100%;
