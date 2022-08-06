@@ -23,13 +23,13 @@ const items:insertFormat = [
 ];
 
 const insert = (/*item: item*/) => {
-    database.query('drop table if exists 62ed819b6519eb8f1a7a1e11');
-    database.query(`create table 62ed819b6519eb8f1a7a1e11 (
+    database.query('drop table if exists 62ee248ed11d291e4164685f');
+    database.query(`create table 62ee248ed11d291e4164685f (
         id int primary key not null auto_increment,
         name varchar(20) not null,
         stock int not null
     );`)
-    const query = `insert into 62ed819b6519eb8f1a7a1e11 (name, stock) values ?`;
+    const query = `insert into 62ee248ed11d291e4164685f (name, stock) values ?`;
 
     database.query(query, [items], err => {
         if(err) console.log(err);
@@ -49,7 +49,19 @@ const initTable = (name: string): void => {
         name varchar(20) not null,
         stock int not null
     )`);
-    console.log('done');
+}
+
+const getIngredients = (name: string, callback: Function): CallableFunction => {
+    let inventory: item[] = [];
+    database.query(`select * from ${name}`, (err, results) => {
+        if(err) console.error(err);
+        else {
+            const row = (<RowDataPacket> results);
+            inventory = row as item[];
+            return callback(inventory);
+        }
+    });
+    return callback(inventory);
 }
 
 // const test = (data: inventory_manager, callback: Function): CallableFunction => {
@@ -71,4 +83,4 @@ const initTable = (name: string): void => {
 //     return callback(items);
 // }
 
-export default { /*test,*/ insert, initTable,  };
+export default { insert, initTable, getIngredients };
