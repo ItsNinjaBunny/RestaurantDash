@@ -5,6 +5,14 @@ import cors from 'cors';
 import routes from './routes/Restaurant_Routes';
 const port = server.port;
 
+declare global {
+    namespace Express {
+        export interface Request {
+            user?: string
+        }
+    }
+}
+
 
 const app = express();
 

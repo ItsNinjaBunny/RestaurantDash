@@ -24,13 +24,13 @@ const login = async(req: Request, res: Response): Promise<Response> => {
         });
     if(bcrypt.compareSync(temp.password, credentials.password)) {
         const token = jwt.sign({
-            id : credentials.id,
+            id : credentials._id,
             license : { key : credentials.license.key }},
             server.secret,
             { expiresIn : 100 * 100 }
         );
     
-        res.setHeader('authorization' , token);
+        res.setHeader('authorization', token);
         return res.status(200).json({
             url : 'http://192.168.1.2:5000/Login',
             token : token
@@ -50,17 +50,11 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
     });
     const account = init(temp);
     
-    let start = Date.now();
-    if( await getEmail(account.email))
+    if(await getEmail(account.email))
         return res.status(500).json({
             error: 'email already exists'
         });
-    console.log('email query executed in:', Date.now() - start, 'ms');
-    start = Date.now();
     const key = req.body.license.key;
-    const response = await request('http://localhost:3001/keys', 'get', {
-        data : { key : key, secret : server.secret }
-    });
     if(key === '') {
         account.license.type = 'client';
         account.cart = {
@@ -70,6 +64,9 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
         account.coupons = [];
     }
     if(key !== '') {
+        const response = await request('http://localhost:3001/keys', 'get', {
+            data : { key : key, secret : server.secret }
+        });
         if(response !== undefined) {
             const results = response.data as license[];
             if(results.length === 0)
@@ -81,7 +78,7 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
                     account.license.key = results[i].key;
                     account.license.restaurant = results[i].restaurant;
                     account.license.type = 'business';
-                    request('http://localhost:3001/register-restaurant', 'post', {
+                    request('http://localhost:3001/register', 'post', {
                         data: {
                             owner: account._id,
                             name: results[i].restaurant,
@@ -91,7 +88,6 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
                     break;
                 }
             }
-            console.log('executed fetch in', Date.now() - start, 'ms');
             if(account.license.key === undefined)
                 return res.status(500).json({
                     error : 'no matching key',

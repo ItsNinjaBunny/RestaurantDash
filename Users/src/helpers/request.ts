@@ -13,18 +13,22 @@ export const request = async(url: string, method: string, params?: any): Promise
             url: url,
             method: method,
             params: params.params,
-            data: params.data
+            data: params.data,
+            headers: params.headers
+
         });
     if(params.params === undefined && params.data !== undefined)
         return axios({
             url: url,
             method: method,
-            data: params.data
+            data: params.data,
+            headers: params.headers
         });
     if(params.params !== undefined && params.data === undefined)
         return axios({
             url: url,
             method: method,
-            params: params.data
+            params: params.data,
+            headers: params.headers
         });
 }

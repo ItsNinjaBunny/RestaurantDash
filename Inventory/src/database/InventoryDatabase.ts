@@ -1,5 +1,6 @@
 import mysql, { OkPacket, RowDataPacket } from 'mysql2';
 import item from '../interfaces/Item';
+import { insert } from '../interfaces/Insert';
 import { options } from '../config/config';
 
 const database = mysql.createConnection({
@@ -9,38 +10,50 @@ const database = mysql.createConnection({
     database: options.database
 });
 
-type insertFormat = [string, number][];
+// type insert = [string, number][];
 
-const items:insertFormat = [
+const items:insert = [
     [
         'carrots',
-        15
+        65
     ],
     [
         'broccoli',
-        13
+        16
     ]
 ];
 
-const insert = (/*item: item*/) => {
-    database.query('drop table if exists 62ee248ed11d291e4164685f');
-    database.query(`create table 62ee248ed11d291e4164685f (
+
+const update = (table: string, inventory: insert) => {
+    database.query(`drop table if exists ${table}`);
+    database.query(`create table ${table}(
         id int primary key not null auto_increment,
         name varchar(20) not null,
         stock int not null
-    );`)
-    const query = `insert into 62ee248ed11d291e4164685f (name, stock) values ?`;
+    )`);
+    const query = `insert into ${table} (name, stock) values ?`;
+    database.query(query, [inventory]);
+}
 
-    database.query(query, [items], err => {
-        if(err) console.log(err);
-    });
-    // `, err => {
-    //     if(err) console.error(err);
-    //     else {
-    //         console.log('inserted');
-    //     }
-    // })
-};
+// const insert = (/*item: item*/) => {
+//     database.query('drop table if exists 62eeb584ca61f3f3bfd7b992');
+//     database.query(`create table 62eeb584ca61f3f3bfd7b992 (
+//         id int primary key not null auto_increment,
+//         name varchar(20) not null,
+//         stock int not null
+//     );`)
+//     const query = `insert into 62eeb584ca61f3f3bfd7b992 (name, stock) values ?`;
+
+//     // database.query(query, [items], err => {
+//         if(err) console.log(err);
+//     });
+//     // `, err => {
+//     //     if(err) console.error(err);
+//     //     else {
+//     //         console.log('inserted');
+//     //     }
+//     // })
+// };
 
 const initTable = (name: string): void => {
     database.query(`drop table if exists ${name}`);
@@ -83,4 +96,4 @@ const getIngredients = (name: string, callback: Function): CallableFunction => {
 //     return callback(items);
 // }
 
-export default { insert, initTable, getIngredients };
+export default { /*insert,*/ initTable, getIngredients, update,  };

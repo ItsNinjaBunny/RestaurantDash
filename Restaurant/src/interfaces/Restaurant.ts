@@ -6,7 +6,7 @@ export interface Restaurant {
     _id : ObjectId,
     name : string,
     menu_items : item[],
-    coupon : coupon[],
+    coupons : coupon[],
     location : {
         type : string,
         formatted_address : string,
@@ -20,7 +20,7 @@ export const init = (options?: Partial<Restaurant>): Restaurant => {
         _id : new ObjectId(),
         name : options?.name,
         menu_items: [],
-        coupon: [],
+        coupons: [],
         location: {
             type: 'Point',
             formatted_address: options?.location?.formatted_address,
