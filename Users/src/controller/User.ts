@@ -6,10 +6,11 @@ import jwt from 'jsonwebtoken';
 import database, { getEmail, getTokens } from '../database/User_Database';
 import login from '../interfaces/Login';
 import license from '../interfaces/License';
+import coupon from '../interfaces/Coupon';
+import cart from '../interfaces/Item';
 import { request } from '../helpers/request';
 
 const login = async(req: Request, res: Response): Promise<Response> => {
-    // console.log('endpoint hit');
     let temp = req.body as login;
 
     if(Object.keys(temp).length === 0)
@@ -21,7 +22,7 @@ const login = async(req: Request, res: Response): Promise<Response> => {
         return res.status(500).json({
             error : 'no user was found'
         });
-    if(await bcrypt.compare(temp.password, credentials.password)) {
+    if(bcrypt.compareSync(temp.password, credentials.password)) {
         const token = jwt.sign({
             id : credentials.id,
             license : { key : credentials.license.key }},
@@ -42,34 +43,55 @@ const login = async(req: Request, res: Response): Promise<Response> => {
 
 const register_account = async(req: Request, res: Response): Promise<Response> => {
     let temp = req.body as user;
-    console.log('items:', temp);
     if(Object.keys(temp).length === 0)
     return res.status(500).json({
         error : 'no data was sent',
         temp
     });
-    const account = await init(req.body as user);
-    if(await getEmail(account.email))
+    const account = init(temp);
+    
+    let start = Date.now();
+    if( await getEmail(account.email))
         return res.status(500).json({
             error: 'email already exists'
         });
+    console.log('email query executed in:', Date.now() - start, 'ms');
+    start = Date.now();
     const key = req.body.license.key;
     const response = await request('http://localhost:3001/keys', 'get', {
         data : { key : key, secret : server.secret }
     });
-    if(key === '')
-        account.license.type = 'personal'
+    if(key === '') {
+        account.license.type = 'client';
+        account.cart = {
+            basket : [],
+            total : 0
+        };
+        account.coupons = [];
+    }
     if(key !== '') {
         if(response !== undefined) {
             const results = response.data as license[];
+            if(results.length === 0)
+                return res.status(500).json({
+                    error: 'no matching key or that key is already in use'
+                });
             for(let i = 0; i < results.length; i++) {
                 if(results[i].key === key) {
                     account.license.key = results[i].key;
                     account.license.restaurant = results[i].restaurant;
                     account.license.type = 'business';
+                    request('http://localhost:3001/register-restaurant', 'post', {
+                        data: {
+                            owner: account._id,
+                            name: results[i].restaurant,
+                            location : { formatted_address : account.location.formatted_address }
+                        }
+                    });
                     break;
                 }
             }
+            console.log('executed fetch in', Date.now() - start, 'ms');
             if(account.license.key === undefined)
                 return res.status(500).json({
                     error : 'no matching key',
@@ -78,9 +100,8 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
         }
     }
     
-    console.log(account);
-    account.password = await bcrypt.hash(account.password, 10);
-    await database.register(account);
+    account.password = bcrypt.hashSync(account.password, 10);
+    database.register(account);
     return res.status(200).json({
         url : 'http://192.168.1.2:5000/Home',
         account

@@ -2,9 +2,8 @@ import { MongoClient } from 'mongodb';
 import { mongo } from '../config/config';
 import { user } from '../interfaces/User';
 import login from '../interfaces/Login';
-import { connect } from '../routes/user_routes';
 
-const client = new MongoClient(mongo.url);
+const client = new MongoClient(mongo.url, mongo.options);
 const db = client.db(mongo.database);
 const collection = { 
     user : db.collection(mongo.collections.users),
@@ -12,7 +11,7 @@ const collection = {
 };
 
 const register = async(user: user) => {
-    await client.connect();
+    client.connect();
     await collection.user.insertOne(user);
     client.close();
 }

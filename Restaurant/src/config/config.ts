@@ -11,6 +11,16 @@ export const mongo = {
     url : String(process.env.mongo_url),
     database : String(process.env.mongo_database),
     collections : {
-        licenses : String(process.env.mongo_collection_licenses)
+        licenses : String(process.env.mongo_collection_licenses),
+        restaurants: String(process.env.mongo_collection_restaurants)
+    },
+    options : {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+        socketTimeoutMS: 30000,
+        keepAlive: true,
+        retryWrites: true,
+        minPoolSize: 10,
+        maxPoolSize: 15
     }
 }

@@ -1,11 +1,16 @@
 import { Request, Response } from 'express';
-import item from '../interfaces/Inventory';
-import database from '../database/InventoryDatabase';
+import Item from '../interfaces/Item';
+import Database from '../database/InventoryDatabase';
 
-const hello = (req: Request, res: Response) => {
-    database.test(function(result: item[]) {
-        return res.status(200).json(result);
-    });
-};
+const initTable = (req: Request, res: Response) => {
+    const name = req.body.id;
+    Database.initTable(name);
+    res.status(200).json('done');
+}
 
-export default { hello, };
+const insert = (req: Request, res: Response) => {
+    Database.insert();
+    res.status(200).json('');
+}
+
+export default { initTable, insert, };

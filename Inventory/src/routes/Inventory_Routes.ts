@@ -3,7 +3,8 @@ import controller from '../controller/InventoryController';
 
 const router = Router();
 
-router.get('/', controller.hello);
+router.get('/', controller.insert);
+router.post('/initTable', controller.initTable);
 
 
 export = router;

@@ -14,4 +14,13 @@ export const mongo = {
         tokens : String(process.env.mongo_collection_tokens)
     },    
     url : String(process.env.mongo_url),
+    options : {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+        socketTimeoutMS: 30000,
+        keepAlive: true,
+        retryWrites: true,
+        minPoolSize: 10,
+        maxPoolSize: 15
+    }
 }
