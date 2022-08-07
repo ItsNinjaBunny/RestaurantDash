@@ -10,8 +10,8 @@ import {
 } from "react-router-dom";
 import Login from './pages/Login/signinForm';
 import  SignupForm  from './pages/Login/signupForm';
-import {AccountBox} from './pages/Login/index'
-
+import {AccountBox} from './pages/Login/index';
+import Client from './pages/client/index'
 function App() {
 
 
@@ -20,6 +20,7 @@ function App() {
     <main>
         <Routes>
             <Route path="/login" element={<Login/>} />
+            <Route path="/client" element={<Client/>} />
             <Route path="/" element={<AccountBox/>} />
             <Route path="/navbar" element={<Navbar/>} />
         </Routes>

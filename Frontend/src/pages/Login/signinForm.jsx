@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 import { AccountContext } from "./AccountContext";
 import { Marginer } from "../../components/marginer/index";
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 import { BoldLink,
     BoxContainer,
     FormContainer,
@@ -60,7 +60,13 @@ import { BoldLink,
             <Marginer direction="vertical" margin={10} />
             <MutedLink href="#">Forget your password?</MutedLink>
             <Marginer direction="vertical" margin="1.6em" />
-            <SubmitButton onClick={handleSubmit}>Signin</SubmitButton>
+            {/* <SubmitButton onClick={handleSubmit}>Signin</SubmitButton> */}
+           
+            <BoldLink href="/client">
+                <SubmitButton>Signin</SubmitButton>
+            </BoldLink>
+               
+            
             <Marginer direction="vertical" margin="1em" />
             <MutedLink  onClick={switchToSignup}>
                 Don't have an account?{" "}

@@ -6,7 +6,7 @@ import { AccountContext } from "./AccountContext";
 import {SignupForm } from "./signupForm";
 import Navbar from "../../components/Navbar/index";
 import "../../App.css"
-import {UserIcon,UserLoginIcon} from "./LoginElements"
+import {UserIcon,UserLoginBox,UserLoginIcon} from "./LoginElements"
 
 
 const BoxContainer = styled(motion.div)`
@@ -24,7 +24,7 @@ const BoxContainer = styled(motion.div)`
       border:1px solid  #fff;;
       box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
       position: relative;
-      left:5rem;
+      left:14rem;
       overflow: hidden;
       top:12vw; 
       opacity:1;
@@ -48,28 +48,25 @@ const BoxContainer = styled(motion.div)`
       left:14rem;
       overflow: hidden;
       top:12vw;
-      transition:1s;
+      transition:.7s;
       opacity:1;
      
      
       `;
     } else {
       return `
-     
-      animation: signup 1s ;
-      
-      width: 30rem;
-      height:43rem;
-      display: flex;
-      border-radius: 19px;
-      border:1px solid #fff;
-      box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
-      position: absolute;
-      left:65vw;    
-      overflow: hidden;
-      top:9vw;
-      transition:.7s;
-    
+        animation: signup .9s ;
+        width: 30rem;
+        height:43rem;
+        display: flex;
+        border-radius: 19px;
+        border:1px solid #fff;
+        box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
+        position: absolute;
+        left:65vw;    
+        overflow: hidden;
+        top:9vw;
+        transition:.7s;
       `;
     }
   }}
@@ -213,12 +210,14 @@ export function AccountBox(props) {
   const contextValue = { switchToSignup, switchToSignin };
 
   return (
-    <AccountContext.Provider value={contextValue}>
+    <AccountContext.Provider style={{ overflow: 'hidden' }} value={contextValue}>
         <Navbar>
         </Navbar>
         <Landing></Landing>
+      <UserLoginBox>
+          <UserLoginIcon toggle={active} />
+      </UserLoginBox>
       <UserIcon toggle={active} />
-      <UserLoginIcon toggle={active} />
       <BoxContainer toggle={active}>
         <InnerContainer toggle={active}>
           {active === "start" && <SignInForm />}

@@ -151,9 +151,9 @@ export const UserIcon = styled(FaUserPlus)`
   color:#ccc;
  
   position:absolute;
-  left:14rem;
+  left:-14rem;
   top:23.5rem;
-  font-size: 0rem;
+  font-size: 18rem;
   opacity:0;
   transition:0.7s;
   z-index:5;
@@ -166,8 +166,8 @@ export const UserIcon = styled(FaUserPlus)`
      }else
     if (props.toggle==='signup') {
      return(`
-   
-     font-size: 18rem;
+     left:14rem;
+     
      opacity:1;
      `)
     }else{
@@ -181,31 +181,69 @@ export const UserIcon = styled(FaUserPlus)`
 `
 export const UserLoginIcon = styled(FaSignInAlt)`
   color:#ccc;
-  border-radius:100%;
+  font-size: 18rem;
   position:absolute;
-  right:14rem;
-  top:23.5rem;
-  font-size: 0rem;
   opacity:0;
+  right:-20rem;
   transition:0.7s;
+  
   z-index:5;
+  ${props => {
+    if (props.toggle==="start") {
+      return(`
+        right:14rem;
+        opacity:1;
+      `)
+     }else
+    if (props.toggle==='signup') {
+     return(`
+      
+      
+      right:-24rem;
+     `)
+    }else{
+      return(`
+     animation:fade 1s .1s ease-in;
+     opacity:1;
+      right:14rem;
+     `)
+
+    };
+    
+  }}
+  `
+export const UserLoginBox = styled.div`
+ 
+  color:#ccc;
+  position:absolute;
+  overflow:hidden;
+  top:23.5rem;
+  height:18rem;
+
+  width:35rem;
+  right:0rem;
+ 
+  
   ${props => {
     if (props.toggle==='start') {
       return(`
-      font-size: 18rem;
-      aniamtion:fade 1s ease-in;
-        opacity:1;
+      
+      animation:fade 1s ease-in;
+      opacity:1;
+        
       `)
      }else
     if (props.toggle==='signin') {
      return(`
-   
+     
      font-size: 18rem;
      opacity:1;
+     display:block;
      `)
     }else{
       return(`
-     opacity:0;
+    
+     
      `)
 
     };
