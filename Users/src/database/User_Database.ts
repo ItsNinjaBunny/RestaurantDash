@@ -2,9 +2,8 @@ import { MongoClient } from 'mongodb';
 import { mongo } from '../config/config';
 import { user } from '../interfaces/User';
 import login from '../interfaces/Login';
-import { connect } from '../routes/user_routes';
 
-const client = new MongoClient(mongo.url);
+const client = new MongoClient(mongo.url, mongo.options);
 const db = client.db(mongo.database);
 const collection = { 
     user : db.collection(mongo.collections.users),
@@ -12,14 +11,14 @@ const collection = {
 };
 
 const register = async(user: user) => {
-    await client.connect();
+    client.connect();
     await collection.user.insertOne(user);
     client.close();
 }
 
 const login = async(credentials : login) => {
     await client.connect();
-    const result =  await collection.user.findOne({ email: String(new RegExp(credentials.username, 'i')) },
+    const result =  await collection.user.findOne({ email: { $regex : `${credentials.username}`, $options : '$i' }},
         { projection: { _id : 1, email: 1, password : 1, license : 1 } }) as unknown as login;
     client.close();
     return result;
@@ -50,7 +49,7 @@ export const getTokens = async(token: string):Promise<boolean> => {
     await client.connect();
     const results = await collection.tokens.find({token : { $eq : token }}).toArray();
     client.close();
-    return results.length > 0 ? true : false;
+    return results.length > 0 ? false : true;
 }
 
 export default { register, login, getAllUsers };

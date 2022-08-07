@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb"
 
 export default interface Login_Information { 
-    id : ObjectId,
+    _id : ObjectId,
     username : string,
     password : string,
     license : {

@@ -9,18 +9,19 @@ export interface user {
     email : string;
     password : string;
     license : license
-    coupons : coupon[];
-    cart : {
+    coupons ?: coupon[];
+    cart ?: {
         basket : item[];
         total : number;
     }, 
     location : {
+        type: string;
         formatted_address : string;
         coords : { lat : number, lng : number } | { }
     }
 }
 
-export const init = async(options?: Partial<user>) => {
+export const init = (options?: Partial<user>): user => {
     return { 
         _id : new ObjectId(),
         name : options?.name,
@@ -29,12 +30,8 @@ export const init = async(options?: Partial<user>) => {
         license : {
             type : options?.license?.key === undefined ? 'personal' : 'business'
         },
-        coupons : [],
-        cart : {
-            basket : [],
-            total : 0
-        },
         location : {
+            type : 'Point',
             formatted_address : options?.location?.formatted_address,
             coords : { }
         }
