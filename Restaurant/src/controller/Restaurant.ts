@@ -14,6 +14,7 @@ const getKeys = async(req: Request, res: Response): Promise<Response> => {
 const registerRestaurant = async(req: Request, res: Response) => {
     const temp = req.body as Restaurant;
     const restaurant = init(temp);
+    console.log(restaurant.owner);
     database.initRestaurant(restaurant);
     request('http://localhost:4000/initTable', 'post', {
         data: {

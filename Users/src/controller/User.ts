@@ -12,6 +12,7 @@ import { request } from '../helpers/request';
 
 const login = async(req: Request, res: Response): Promise<Response> => {
     let temp = req.body as login;
+    console.log(temp);
 
     if(Object.keys(temp).length === 0)
         return res.status(500).json({
@@ -32,8 +33,11 @@ const login = async(req: Request, res: Response): Promise<Response> => {
     
         res.setHeader('authorization', token);
         return res.status(200).json({
-            url : 'http://192.168.1.2:5000/Login',
-            token : token
+            url : 'http://192.168.1.2:5000/Client',
+            auth: {
+                id: bcrypt.hashSync(credentials._id.toString(), 10),
+                license : credentials.license
+            }
         });
     }
     return res.status(500).json({

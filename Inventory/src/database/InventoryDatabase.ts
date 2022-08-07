@@ -56,6 +56,7 @@ const update = (table: string, inventory: insert) => {
 // };
 
 const initTable = (name: string): void => {
+    console.log(name);
     database.query(`drop table if exists ${name}`);
     database.query(`create table ${name}(
         id int primary key not null auto_increment,
