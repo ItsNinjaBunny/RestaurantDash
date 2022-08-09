@@ -4,6 +4,8 @@ import { server } from '../config/config';
 import { request } from '../helpers/request';
 import { Restaurant, init } from '../interfaces/Restaurant';
 import database, { keys } from '../database/Restaurant_Database';
+import Ingredient from '../interfaces/Ingredient';
+import Recipe from '../interfaces/Item';
 
 const getKeys = async(req: Request, res: Response): Promise<Response> => {
     if(String(req.body.secret) === server.secret )
@@ -28,7 +30,7 @@ const registerRestaurant = async(req: Request, res: Response) => {
 const getInventory = async(req: Request, res: Response): Promise<Response> => {
     const response = await request('http://localhost:4000/ingredients', 'get', {
         data : {
-            id : req.user
+            id : req.id
         }
     });
 
@@ -43,14 +45,13 @@ const updateInventory = async(req: Request, res: Response): Promise<Response | v
         inventory : [string, number][];
     }
     const data = req.body as insert;
-    // res.setHeader('authorization', String(req.headers['authorization']).split(' ')[1]);
     const response = await request('http://localhost:4000/update', 'patch', {
         data: {
             db: data.id,
             inventory: data.inventory
         },
         headers: {
-            Authorization: String(req.headers['authorization']).split(' ')[1]
+            authorization: String(req.headers['authorization']).split(' ')[1]
         }
     });
     if(response !== undefined)
@@ -62,4 +63,28 @@ const updateInventory = async(req: Request, res: Response): Promise<Response | v
     // return;
 }
 
-export default { getKeys, registerRestaurant, getInventory, updateInventory };
+const addRecipe = async(req: Request, res: Response) => {
+    const recipe = req.body as Recipe;
+
+    const newIngridients: [string, number][] = [];
+    recipe.ingridients.forEach(ingridient => {
+        if(ingridient.new) 
+            newIngridients.push([ingridient.name, 0]);
+        
+    });
+    console.log(req.id);
+    request(`http://localhost:4000/update?id=${String(req.query.id)}`, 'patch', {
+        data: {
+            db: req.id,
+            inventory: newIngridients,
+            type: 'insert'
+        },
+        headers: {
+            authorization: String(req.headers['authorization']).split(' ')[1]
+        }
+    });
+
+    res.sendStatus(200);
+}
+
+export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe };

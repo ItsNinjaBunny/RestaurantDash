@@ -1,7 +1,6 @@
-import { ObjectId } from 'mongodb';
-
-export default interface Ingrident {
-    _id : ObjectId;
+export default interface Ingredient {
     name : string;
-    stock : number;
+    quantity?: number;
+    new ?: boolean;
+    stock?: number;
 }

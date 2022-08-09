@@ -78,6 +78,11 @@ const getIngredients = (name: string, callback: Function): CallableFunction => {
     return callback(inventory);
 }
 
+const insert = (name: string, inventory: insert) => {
+    const query = `insert into ${name}(name, stock) values ?`;
+    database.query(query, [inventory]);
+}
+
 // const test = (data: inventory_manager, callback: Function): CallableFunction => {
 //     // database.query(`INSERT INTO Inventory(name, stock)
 //     //     VALUES ('carrots', 5)
@@ -97,4 +102,4 @@ const getIngredients = (name: string, callback: Function): CallableFunction => {
 //     return callback(items);
 // }
 
-export default { /*insert,*/ initTable, getIngredients, update,  };
+export default { insert, initTable, getIngredients, update,  };

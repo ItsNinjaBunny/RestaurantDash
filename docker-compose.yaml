@@ -22,6 +22,7 @@ services:
     ports:
       - 3306:3306
     command: mysqld
+    
   user_management:
     image: mongo:latest
     environment:
@@ -30,10 +31,11 @@ services:
     networks:
       - dash
     volumes:
-      - users:/var/lib/mongo
+      - users:/db/data
     ports:
       - 27017:27017
     restart: always
+
   restaurant_management:
     image: mongo:latest
     environment:
@@ -42,7 +44,7 @@ services:
     networks:
       - dash
     volumes:
-      - restaurants:/var/lib/mongo
+      - restaurants:/db/data
     ports:
       - 27018:27017
     restart: always
@@ -50,5 +52,8 @@ services:
 
 volumes:
   inventory:
+    external : true
   users:
+    external : true
   restaurants:
+    external : true

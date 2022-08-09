@@ -9,11 +9,6 @@ const initTable = (req: Request, res: Response): Response => {
     return res.status(200).json('done');
 }
 
-// const insert = (req: Request, res: Response): Response => {
-//     Database.insert();
-//     return res.status(200).json('done');
-// }
-
 const getIngredients = (req: Request, res: Response): Response | void => {
     const name = req.body.id;
     let inventory: Item[] = [];
@@ -31,22 +26,12 @@ const getIngredients = (req: Request, res: Response): Response | void => {
 
 const update = (req: Request, res: Response): Response | void => {
     const data: update = req.body;
-    let inventory: Item[] = [];
-    Database.update(data.db, data.inventory);
-    
-    setTimeout(() => {
-        Database.getIngredients(data.db, function(results: Item[]) {
-            inventory = results;
-        });
-        setTimeout(() => { 
-            inventory.length === 0 ? res = res.status(500).json({
-                error: 'the inventory you\'re looking for doesn\'t exist'
-            }) :  res = res.status(200).json({ inventory : inventory });
-            return res;
-        }, 20);
-    }, 70);
-    
-    return;
+    console.log(data);
+    if(data.type === 'insert')
+        Database.insert(data.db, data.inventory);
+    if(data.type === 'update')
+        Database.update(data.db, data.inventory);
+    res.send('hi');
 }
 
 export default { initTable, /*insert,*/ getIngredients, update,  };

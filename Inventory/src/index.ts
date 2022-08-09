@@ -7,6 +7,14 @@ const port = server.port || 4000;
 
 const app = express();
 
+declare global {
+    namespace Express {
+        export interface Request {
+            id?: string
+        }
+    }
+}
+
 app.use(bodyParser.urlencoded({ extended : true }));
 app.use(bodyParser.json());
 app.use(cors());

@@ -4,8 +4,8 @@ import { server } from '../config/config';
 import jwt from 'jsonwebtoken';
 
 export const verify = async(req: Request, res: Response, next: NextFunction) => {
-    const token = String(req.headers['authorization']).split(' ')[1];
-    
+    // const token = String(req.headers['authorization']).split(' ')[1];
+    const token = String(req.query.id);
     if(token !== undefined) {
         const response = await request('http://localhost:3000/token', 'get', {
             data : { token : token, secret : server.secret } 
@@ -15,7 +15,7 @@ export const verify = async(req: Request, res: Response, next: NextFunction) => 
                 const user =(<jwt.JwtPayload> jwt.verify(token, server.secret));
                 if(user.license.key === undefined)
                     return res.status(401).json('not authorized');
-                req.user = String(user.id);
+                req.id = String(user.id);
                 return next();
             }
     }

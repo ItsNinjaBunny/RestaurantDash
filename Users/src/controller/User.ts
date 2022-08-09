@@ -12,7 +12,6 @@ import { request } from '../helpers/request';
 
 const login = async(req: Request, res: Response): Promise<Response> => {
     let temp = req.body as login;
-    console.log(temp);
 
     if(Object.keys(temp).length === 0)
         return res.status(500).json({
@@ -36,6 +35,7 @@ const login = async(req: Request, res: Response): Promise<Response> => {
             url : 'http://192.168.1.2:5000/Client',
             auth: {
                 id: bcrypt.hashSync(credentials._id.toString(), 10),
+                token: token,
                 license : credentials.license
             }
         });

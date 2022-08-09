@@ -10,5 +10,6 @@ router.get('/inventory', verify, controller.getInventory);
 router.patch('/updateInventory', verify, controller.updateInventory);
 
 router.post('/register', controller.registerRestaurant);
+router.post('/addRecipe', verify, controller.addRecipe);
 
 export = router;
