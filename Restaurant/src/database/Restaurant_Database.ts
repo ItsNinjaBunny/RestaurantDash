@@ -32,4 +32,9 @@ const addRecipe = async(id: string, recipe: Recipe) => {
     }, { $addToSet : { menu_items : recipe }});
 }
 
-export default { initRestaurant, addRecipe };
+const findCuisine = async(cuisine: string) => {
+    return await collections.restaurants.find({
+        menu_items : { $elemMatch : { ethnicity : cuisine }}}).project({ _id : 1, 'menu_items.ingredients' : 0 }).sort({ name : 1 }).toArray();
+};
+
+export default { initRestaurant, addRecipe, findCuisine };
