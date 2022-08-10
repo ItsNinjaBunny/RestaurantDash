@@ -49,6 +49,38 @@ services:
       - 27018:27017
     restart: always
 
+  user-api:
+    image: braydenwongcode/restaurant-dash-users:latest
+    build:
+      context: ./Users/
+      dockerfile: dockerfile
+    networks:
+      - dash
+    deploy:
+      replicas: 1
+    restart: always
+
+  restaurant-api:
+    image: braydenwongcode/restaurant-dash-restaurants:latest
+    build:
+      context: ./Restaurants/
+      dockerfile: dockerfile
+    networks:
+      - dash
+    deploy:
+      replicas: 1
+    restart: always
+
+  inventory-api:
+    image: braydenwongcode/restaurant-dash-inventory:latest
+    build:
+      context: ./Inventory/
+      dockerfile: dockerfile
+    networks:
+      - dash
+    deploy:
+      replicas: 1
+    restart: always
 
 volumes:
   inventory:
