@@ -4,14 +4,14 @@ import bcrypt from 'bcrypt';
 import { server } from '../config/config';
 import jwt from 'jsonwebtoken';
 import database, { getEmail, getTokens } from '../database/User_Database';
-import login from '../interfaces/Login';
+import Credentials from '../interfaces/Credentials';
 import license from '../interfaces/License';
 import coupon from '../interfaces/Coupon';
 import cart from '../interfaces/Item';
 import { request } from '../helpers/request';
 
 const login = async(req: Request, res: Response): Promise<Response> => {
-    let temp = req.body as login;
+    let temp = req.body as Credentials;
 
     if(Object.keys(temp).length === 0)
         return res.status(500).json({
@@ -29,13 +29,9 @@ const login = async(req: Request, res: Response): Promise<Response> => {
             server.secret,
             { expiresIn : 100 * 100 }
         );
-    
-        res.setHeader('authorization', token);
         return res.status(200).json({
-            url : 'http://192.168.1.2:5000/Client',
             auth: {
-                id: bcrypt.hashSync(credentials._id.toString(), 10),
-                token: token,
+                id: token,
                 license : credentials.license
             }
         });
@@ -59,6 +55,7 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
             error: 'email already exists'
         });
     const key = req.body.license.key;
+    
     if(key === '') {
         account.license.type = 'client';
         account.cart = {
@@ -69,7 +66,10 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
     }
     if(key !== '') {
         const response = await request('http://localhost:3001/keys', 'get', {
-            data : { key : key, secret : server.secret }
+            data : { 
+                key : key,
+                restaurant: String(req.body.license.restaurant),
+                secret : server.secret }
         });
         if(response !== undefined) {
             const results = response.data as license[];

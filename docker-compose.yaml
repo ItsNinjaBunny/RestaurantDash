@@ -31,7 +31,7 @@ services:
     networks:
       - dash
     volumes:
-      - users:/db/data
+      - users:/data/db
     ports:
       - 27017:27017
     restart: always
@@ -44,7 +44,7 @@ services:
     networks:
       - dash
     volumes:
-      - restaurants:/db/data
+      - restaurants:/data/db
     ports:
       - 27018:27017
     restart: always

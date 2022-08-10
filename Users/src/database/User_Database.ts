@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { mongo } from '../config/config';
 import { user } from '../interfaces/User';
-import login from '../interfaces/Login';
+import login from '../interfaces/Credentials';
 
 const client = new MongoClient(mongo.url, mongo.options);
 const db = client.db(mongo.database);

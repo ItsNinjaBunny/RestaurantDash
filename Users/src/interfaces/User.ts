@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import Order from './Order';
 import item from './Item';
 import coupon from './Coupon';
 import license from './License';
@@ -13,7 +14,8 @@ export interface user {
     cart ?: {
         basket : item[];
         total : number;
-    }, 
+    },
+    order_history?: Order[];
     location : {
         type: string;
         formatted_address : string;

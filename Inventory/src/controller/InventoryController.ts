@@ -26,7 +26,6 @@ const getIngredients = (req: Request, res: Response): Response | void => {
 
 const update = (req: Request, res: Response): Response | void => {
     const data: update = req.body;
-    console.log(data);
     if(data.type === 'insert')
         Database.insert(data.db, data.inventory);
     if(data.type === 'update')

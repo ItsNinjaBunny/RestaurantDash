@@ -9,14 +9,13 @@ import Recipe from '../interfaces/Item';
 
 const getKeys = async(req: Request, res: Response): Promise<Response> => {
     if(String(req.body.secret) === server.secret )
-        return res.status(200).json(await keys(String(req.body.key))); 
+        return res.status(200).json(await keys(String(req.body.key), String(req.body.restaurant))); 
     return res.status(401).json('not authorized');
 };
 
 const registerRestaurant = async(req: Request, res: Response) => {
     const temp = req.body as Restaurant;
     const restaurant = init(temp);
-    console.log(restaurant.owner);
     database.initRestaurant(restaurant);
     request('http://localhost:4000/initTable', 'post', {
         data: {
@@ -48,41 +47,48 @@ const updateInventory = async(req: Request, res: Response): Promise<Response | v
     const response = await request('http://localhost:4000/update', 'patch', {
         data: {
             db: data.id,
-            inventory: data.inventory
-        },
-        headers: {
-            authorization: String(req.headers['authorization']).split(' ')[1]
+            inventory: data.inventory,
+            type: 'update'
         }
     });
     if(response !== undefined)
         return res.json(response.data);
     return res.json('could not update inventory');
-
-    // if(response !== undefined)
-    //     return res.status(200).json(response.data);
-    // return;
 }
 
 const addRecipe = async(req: Request, res: Response) => {
-    const recipe = req.body as Recipe;
+    const recipe = req.body.recipe as Recipe;
+    const id = String(req.id);
+    
+    // console.log(Object.keys(recipe));
+    const newIngredients = (): boolean => {
+        let bool = false;
+        recipe.ingredients.forEach(ingredient => {
+            if(ingredient.new)
+                bool = true;
+        });
+        return bool;
+    }
 
-    const newIngridients: [string, number][] = [];
-    recipe.ingridients.forEach(ingridient => {
-        if(ingridient.new) 
-            newIngridients.push([ingridient.name, 0]);
-        
-    });
-    console.log(req.id);
-    request(`http://localhost:4000/update?id=${String(req.query.id)}`, 'patch', {
-        data: {
-            db: req.id,
-            inventory: newIngridients,
-            type: 'insert'
-        },
-        headers: {
-            authorization: String(req.headers['authorization']).split(' ')[1]
-        }
-    });
+    if(newIngredients()) {
+        type insertFormat = [string, number][];
+        const ingredients: insertFormat = [];
+        recipe.ingredients.forEach(ingredient => {
+            if(ingredient.new === true) {
+                delete ingredient.new;
+                ingredients.push([ingredient.name, 0]);
+            }
+                
+        });
+        request(`http://localhost:4000/update?id=${String(req.query.id)}`, 'patch', {
+            data: {
+                db: id,
+                inventory: ingredients,
+                type: 'insert'
+            }
+        });
+    }
+    database.addRecipe(id, recipe);
 
     res.sendStatus(200);
 }
