@@ -34,7 +34,8 @@ const addRecipe = async(id: string, recipe: Recipe) => {
 
 const findCuisine = async(cuisine: string) => {
     return await collections.restaurants.find({
-        menu_items : { $elemMatch : { ethnicity : cuisine }}}).project({ _id : 1, 'menu_items.ingredients' : 0 }).sort({ name : 1 }).toArray();
+        menu_items : { $elemMatch : { cuisine : { $regex: cuisine, $options : '$i' }}}})
+            .project({ _id : 1, 'menu_items.ingredients' : 0 }).sort({ name : 1 }).toArray();
 };
 
 export default { initRestaurant, addRecipe, findCuisine };

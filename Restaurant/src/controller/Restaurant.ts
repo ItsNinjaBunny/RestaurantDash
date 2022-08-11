@@ -93,18 +93,24 @@ const addRecipe = async(req: Request, res: Response) => {
     res.sendStatus(200);
 }
 
-const getTypeOfCuisine = async(req: Request, res: Response) => {
+const getCuisine = async(req: Request, res: Response) => {
     const type = String(req.query.type);
+    if(type === undefined)
+        res.status(500).json({
+            error: 'no cuisine was inserted'
+        });
     const start = Date.now();
     const results = await database.findCuisine(type) as Restaurant[];
-    results.unshift();
     results.forEach(restaurant => {
         restaurant.menu_items.forEach((item: Recipe) => {
-            if(item.ethnicity !== type) {
+            if(item.cuisine.toLowerCase() !== type.toLowerCase()) {
                 const index = restaurant.menu_items.findIndex((temp: Recipe) => {
                     return temp === item;
                 });
-                restaurant.menu_items = restaurant.menu_items.splice(0, index);
+                if(index === 0)
+                    restaurant.menu_items.shift();
+                else 
+                    restaurant.menu_items = restaurant.menu_items.splice(0, index);
             }
         });
     });
@@ -114,4 +120,4 @@ const getTypeOfCuisine = async(req: Request, res: Response) => {
     });
 }
 
-export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getTypeOfCuisine };
+export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getCuisine };

@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/keys', controller.getKeys);
 router.get('/inventory', verify, controller.getInventory);
-router.get('/restaurants?:type', controller.getTypeOfCuisine);
+router.get('/restaurants?:type', controller.getCuisine);
 
 router.patch('/updateInventory', verify, controller.updateInventory);
 

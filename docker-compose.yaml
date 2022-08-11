@@ -22,7 +22,7 @@ services:
     ports:
       - 3306:3306
     command: mysqld
-    
+
   user_management:
     image: mongo:latest
     environment:
@@ -49,39 +49,6 @@ services:
       - 27018:27017
     restart: always
 
-  user-api:
-    image: braydenwongcode/restaurant-dash-users:latest
-    build:
-      context: ./Users/
-      dockerfile: dockerfile
-    networks:
-      - dash
-    deploy:
-      replicas: 1
-    restart: always
-
-  restaurant-api:
-    image: braydenwongcode/restaurant-dash-restaurants:latest
-    build:
-      context: ./Restaurants/
-      dockerfile: dockerfile
-    networks:
-      - dash
-    deploy:
-      replicas: 1
-    restart: always
-
-  inventory-api:
-    image: braydenwongcode/restaurant-dash-inventory:latest
-    build:
-      context: ./Inventory/
-      dockerfile: dockerfile
-    networks:
-      - dash
-    deploy:
-      replicas: 1
-    restart: always
-
 volumes:
   inventory:
     external : true
@@ -89,3 +56,54 @@ volumes:
     external : true
   restaurants:
     external : true
+
+  # user-api:
+  #   # image: braydenwongcode/restaurant-dash-users:latest
+  #   build:
+  #     context: ./Users/
+  #     dockerfile: dockerfile
+  #   networks:
+  #     - dash
+  #   deploy:
+  #     replicas: 1
+  #   restart: always
+
+  # restaurant-api:
+  #   # image: braydenwongcode/restaurant-dash-restaurants:latest
+  #   build:
+  #     context: ./Restaurants/
+  #     dockerfile: dockerfile
+  #   networks:
+  #     - dash
+  #   deploy:
+  #     replicas: 1
+  #   restart: always
+
+  # inventory-api:
+  #   # image: braydenwongcode/restaurant-dash-inventory:latest
+  #   build:
+  #     context: ./Inventory/
+  #     dockerfile: dockerfile
+  #   networks:
+  #     - dash
+  #   deploy:
+  #     replicas: 1
+  #   restart: always
+
+  # gateway:
+  #   # image: braydenwongcode/restaurant-dash-gateway:latest
+  #   build:
+  #     context: ./gateway/
+  #     dockerfile: dockerfile
+  #   networks:
+  #     - dash
+  #   restart: always
+
+  # eureka:
+  #   # image: braydenwongcode/restaurant-dash-eureka:latest
+  #   build:
+  #     context: ./eureka/
+  #     dockerfile: dockerfile
+  #   networks:
+  #     - dash
+  #   restart: always

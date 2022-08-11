@@ -2,7 +2,7 @@ import ingredient from './Ingredient';
 
 export default interface Item_Menu {
     dish_name : string;
-    ethnicity: string;
+    cuisine: string;
     ingredients : ingredient[],
     price: number;
     image_links: string[]
