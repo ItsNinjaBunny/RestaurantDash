@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FaEnvelope,FaKey, FaSignInAlt, FaUserPlus} from 'react-icons/fa';
+import { FaAddressBook, FaAddressCard, FaEnvelope,FaHouseUser,FaKey, FaLandmark, FaMap, FaMapMarked, FaMapPin, FaSignInAlt, FaUser, FaUserLock, FaUserPlus} from 'react-icons/fa';
 export const BoxContainer = styled.div`
   width: 100%;
   display: flex;
@@ -124,6 +124,33 @@ top:.2rem;
 font-size: 1.8rem;
 cursor: pointer;
 `
+export const User= styled(FaUser)`
+color:#fff;
+dispaly:block;
+position:relative;
+left:1.1rem;
+top:.2rem;
+font-size: 1.8rem;
+cursor: pointer;
+`
+export const SecretKey= styled(FaUserLock)`
+color:#fff;
+dispaly:block;
+position:relative;
+left:1.1rem;
+top:.2rem;
+font-size: 1.8rem;
+cursor: pointer;
+`
+export const Address= styled(FaMapMarked)`
+color:#fff;
+dispaly:block;
+position:relative;
+left:1.1rem;
+top:.2rem;
+font-size: 1.8rem;
+cursor: pointer;
+`
 export const EmailBox = styled.div`
 height:2.2rem;
 width:20rem;
@@ -149,7 +176,9 @@ cursor: pointer;
 `
 export const UserIcon = styled(FaUserPlus)`
   color:#ccc;
- 
+  @media screen and (max-width: 1300px) {
+    display: none;
+  }
   position:absolute;
   left:-14rem;
   top:23.5rem;
@@ -211,6 +240,9 @@ export const UserLoginIcon = styled(FaSignInAlt)`
     };
     
   }}
+  @media screen and (max-width: 1300px) {
+    display: none;
+  }
   `
 export const UserLoginBox = styled.div`
  
@@ -223,7 +255,9 @@ export const UserLoginBox = styled.div`
   width:35rem;
   right:0rem;
  
-  
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
   ${props => {
     if (props.toggle==='start') {
       return(`

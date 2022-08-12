@@ -7,7 +7,7 @@ import {
   BoxContainer,
   FormContainer,
   Input,
-  MutedLink, H1, P1, Password, Email, EmailBox, PasswordBox
+  MutedLink, H1, P1, Password, Email, EmailBox, PasswordBox, User, SecretKey,Address
 } from "./LoginElements";
 import { Marginer } from "../../components/marginer/index";
 import { AccountContext } from "./AccountContext.jsx";
@@ -95,7 +95,7 @@ const password_pattern = /^(?=.*[A-Z]){1,}(?=.*\d){1,}(?=.*[!@#$%^&*()\[\]{};:'"
         <H1>Sign Up</H1>
         <P1>Create an account today ready </P1>
         <EmailBox>
-          <Email />
+          <User />
           <Input value={name} placeholder='name' onChange={(e) => setName(e.target.value)} />
         </EmailBox>
         <br></br>
@@ -115,12 +115,12 @@ const password_pattern = /^(?=.*[A-Z]){1,}(?=.*\d){1,}(?=.*[!@#$%^&*()\[\]{};:'"
         </PasswordBox>
         <br></br>
         <PasswordBox>
-          <Password></Password>
+          <SecretKey></SecretKey>
           <Input value={key} type='password' placeholder='Secret Key' onChange={(e) => setKey(e.target.value)} />
         </PasswordBox>
         <br></br>
         <EmailBox>
-          <Email />
+          <Address/>
           <Input value={address} placeholder='420 Naomi Jane Parkway Highway, CA' onChange={(e) => setAddress(e.target.value)} />
         </EmailBox>
       </FormContainer>

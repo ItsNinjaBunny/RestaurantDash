@@ -1,0 +1,33 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+body{
+    background-color:#fff;
+}
+.flexbox{
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width:768px;
+    height:auto;
+    min-height:10vw;
+    overflow: hidden;
+    margin:0 auto;
+    padding:1vw;
+}
+.flexbox .board{
+    display:flex;
+    flex-direction: column;
+    
+    width:100%;
+    max-width:300px;
+    background-color:green;
+}
+.flexbox .board .card{
+   
+    padding:1vw 1vw ;
+    cursor:pointer;
+    background-color:red;
+}

@@ -26,18 +26,25 @@ import { BoldLink,
             console.log("helloa");
             let res = await axios("http://192.168.1.6:3000/login", {
                 method: "POST",
-                data: JSON.stringify({
+                data: {
                     username: username,
                     password: password
 
-                }),
+                },
             });
             console.log(res);
             if (res.status === 200) {
                 setUsername("");
                 setPassword("");
-                //window.location.href = res.data.url;
+                //if client and if buisness 
+                if(res.data.auth.license.type==='client'){
+                    window.location.href = 'http://localhost:5000/client?type='+res.data.auth.license.type+'?id='+res.data.auth.id;
+                }else if(res.data.auth.license.type==='business'){
+                    window.location.href = 'http://localhost:5000/business?type='+res.data.auth.license.type+'?id='+res.data.auth.id;
+                }
+              
             }
+            
         } catch (err) {
             console.log(err);
         }
@@ -62,8 +69,8 @@ import { BoldLink,
             <Marginer direction="vertical" margin="1.6em" />
             {/* <SubmitButton onClick={handleSubmit}>Signin</SubmitButton> */}
            
-            <BoldLink href="/client">
-                <SubmitButton>Signin</SubmitButton>
+            <BoldLink>
+                <SubmitButton onClick={handleSubmit} >Signin</SubmitButton>
             </BoldLink>
                
             

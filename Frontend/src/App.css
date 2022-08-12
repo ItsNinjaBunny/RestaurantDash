@@ -76,6 +76,16 @@
     
   }
 }
+.link{
+  transition:0.7s;
+  padding:1vw;
+  background-color:#fff;
+  color:#000;
+  border-radius: 1vw;
+  margin:1vw;
+  font-size:  2.5vw!important;;
+  
+}
 
 @keyframes fade {
   
@@ -114,9 +124,8 @@
    }
 
  100% {
-  
     border-radius: 19px;
-    top:11rem;
+    top:14%;
     height:43rem;
     width:30rem;
   }

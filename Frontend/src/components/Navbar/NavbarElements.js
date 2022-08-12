@@ -3,19 +3,41 @@ import { NavLink as Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Nav = styled.nav`
-  background-color:#0000004f;
-  height: 80px;
+  background-color:transparent;
+  min-height: 80px;
+  
   width:100%;
   display: flex;
-  justify-content: space-between;
+  text-align:center;
   border-bottom:.1vw solid #fff;
   border-radius:10vw;
   overflow:hidden;
   z-index: 10;
   position:fixed;
   top:0;
+  z-index:5;
   /* Third Nav */
   /* justify-content: flex-start; */
+  ${props => {
+    if (props.toggle==='business') {
+      return `
+         color:#fff!important;
+          text-align:right;
+          z-index:5;
+      `;
+    
+    }
+    if (props.toggle==='client') {
+      return `
+          background-color:#ccc;
+          border-radius:0;
+          text-align:right;
+          z-index:5;
+      `;
+    
+    }
+  }
+  }
 `;
 
 export const NavLink = styled(Link)`
@@ -46,14 +68,8 @@ export const Bars = styled(FaBars)`
 `;
 
 export const NavMenu = styled.div`
-  display: flex;
-  align-items: center;
-  
-  margin-right: -24px;
-  /* Second Nav */
-  /* margin-right: 24px; */
-  /* Third Nav */
-  /* width: 100vw;
+  margin:0 auto;
+
   white-space: nowrap; */
   @media screen and (max-width: 768px) {
     display: none;
@@ -91,7 +107,9 @@ export const NavBtnLink = styled(Link)`
   }
 `;
 export const H1 = styled.h1`
-  margin:1vw auto;
+  margin:vw auto;
   color:#fff;
+
   font-weight:200;
+  font-size:2.7vw;
 `

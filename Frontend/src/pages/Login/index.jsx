@@ -11,7 +11,6 @@ import {UserIcon,UserLoginBox,UserLoginIcon} from "./LoginElements"
 
 const BoxContainer = styled(motion.div)`
   background:#0000004f;
-
   ${props => {
     if (props.toggle==='start') {
       return `
@@ -65,7 +64,7 @@ const BoxContainer = styled(motion.div)`
         position: absolute;
         left:65vw;    
         overflow: hidden;
-        top:9vw;
+        top:14%;
         transition:.7s;
       `;
     }
@@ -74,22 +73,7 @@ const BoxContainer = styled(motion.div)`
 
 
 
-const BackDrop = styled(motion.div)`
-  width: 160%;
-  height: 550px;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  border-radius: 50%;
-  transform: rotate(60deg);
-  
-  background: rgb(241, 196, 15);
-  background: linear-gradient(
-    58deg,
-    rgba(241, 196, 15, 1) 20%,
-    rgba(243, 172, 18, 1) 100%
-  );
-`;
+
 const Landing = styled.div`
     //background-color:#0f2125;
     background:url(https://wallpaperaccess.com/full/3112895.jpg);
@@ -101,29 +85,7 @@ const Landing = styled.div`
     background-size:cover;
     background-repeat:no-repeat;
 `
-const HeaderContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
 
-const HeaderText = styled.h2`
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 1.24;
-  color: #fff;
-  z-index: 10;
-  margin: 0;
-`;
-
-const SmallText = styled.h5`
-  color: #fff;
-  font-weight: 500;
-  font-size: 11px;
-  z-index: 10;
-  margin: 0;
-  margin-top: 7px;
-`;
 
 const InnerContainer = styled.div`
   width: 100%;
@@ -210,7 +172,7 @@ export function AccountBox(props) {
   const contextValue = { switchToSignup, switchToSignin };
 
   return (
-    <AccountContext.Provider style={{ overflow: 'hidden' }} value={contextValue}>
+    <AccountContext.Provider  value={contextValue}>
         <Navbar>
         </Navbar>
         <Landing></Landing>
