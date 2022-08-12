@@ -3,7 +3,8 @@ import axios, { AxiosResponse } from 'axios';
 export const request = async(url: string, method: string, params?: any): Promise<AxiosResponse<any, any> | undefined> => {
     if(url === null || method === null)
         return;
-    if(params === undefined)
+
+    if(params === undefined || Object.keys(params).length === 0)
         return await axios({
             url: url,
             method: method

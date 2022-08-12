@@ -9,6 +9,7 @@ import license from '../interfaces/License';
 import coupon from '../interfaces/Coupon';
 import cart from '../interfaces/Item';
 import { request } from '../helpers/request';
+import { getAllJSDocTagsOfKind } from 'typescript';
 
 const login = async(req: Request, res: Response): Promise<Response> => {
     let temp = req.body as Credentials;
@@ -116,4 +117,12 @@ const getToken = async(req: Request, res: Response): Promise<Response> => {
     return res.status(401).json('not authorized');
 }
 
-export default { login, register_account, getAllUsers, getToken,  }
+const getUser = async(req: Request, res: Response): Promise<Response> => {
+    //@ts-ignore
+    const user = await database.getUser(String(req.id));
+    if(user === null)
+        return res.status(200).json('no user was found');
+    return res.status(200).json(user[0]);
+}
+
+export default { login, register_account, getAllUsers, getToken, getUser, }

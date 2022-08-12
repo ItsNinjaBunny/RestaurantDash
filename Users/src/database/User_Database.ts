@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import { mongo } from '../config/config';
 import { user } from '../interfaces/User';
 import login from '../interfaces/Credentials';
@@ -31,6 +31,24 @@ const getAllUsers = async(): Promise<user[]> => {
     return results;
 }
 
+const getUser = async(id: string): Promise<user[] | null> => {
+    await client.connect();
+    const options = {
+        _id : 1,
+        name: 1,
+        cart: 1,
+        location: 1
+    }
+
+    const user = await collection.user.find({ _id : new ObjectId(id)})
+        .project({ _id : 1, name: 1, cart: 1, location: 1 })
+        .limit(1)
+        .toArray() as user[];
+    client.close();
+    //@ts-ignore
+    return user;
+}
+
 export const containsToken = async(token: string) => {
     await client.connect();
     const results = await collection.tokens.find({ _id : token }).toArray();
@@ -52,4 +70,4 @@ export const getTokens = async(token: string):Promise<boolean> => {
     return results.length > 0 ? false : true;
 }
 
-export default { register, login, getAllUsers };
+export default { register, login, getAllUsers, getUser };

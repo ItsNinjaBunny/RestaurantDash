@@ -1,8 +1,7 @@
-import express, { application, Request, Response } from 'express';
-import bodyParser from 'body-parser';
+import express, { Request, Response } from 'express';
 import { server } from './config/config';
 import cors from 'cors';
-import routes from './routes/user_routes';
+import router from './routes/routes';
 
 declare global {
     namespace Express {
@@ -12,16 +11,13 @@ declare global {
     }
 }
 
-const port = server.port;
 const app = express();
+const port = server.port;
 
-
-app.use(bodyParser.urlencoded({ extended : true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended : true }));
+app.use(express.json());
 app.use(cors());
-
-app.use('/', routes);
-
+app.use('/', router);
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`);
