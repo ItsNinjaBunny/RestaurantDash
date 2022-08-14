@@ -10,20 +10,6 @@ const database = mysql.createConnection({
     database: options.database
 });
 
-// type insert = [string, number][];
-
-const items:insert = [
-    [
-        'carrots',
-        65
-    ],
-    [
-        'broccoli',
-        16
-    ]
-];
-
-
 const update = (table: string, inventory: insert) => {
     console.log(inventory);
     database.query(`drop table if exists ${table}`);
@@ -35,26 +21,6 @@ const update = (table: string, inventory: insert) => {
     const query = `insert into ${table} (name, stock) values ?`;
     database.query(query, [inventory]);
 }
-
-// const insert = (/*item: item*/) => {
-//     database.query('drop table if exists 62eeb584ca61f3f3bfd7b992');
-//     database.query(`create table 62eeb584ca61f3f3bfd7b992 (
-//         id int primary key not null auto_increment,
-//         name varchar(20) not null,
-//         stock int not null
-//     );`)
-//     const query = `insert into 62eeb584ca61f3f3bfd7b992 (name, stock) values ?`;
-
-//     // database.query(query, [items], err => {
-//         if(err) console.log(err);
-//     });
-//     // `, err => {
-//     //     if(err) console.error(err);
-//     //     else {
-//     //         console.log('inserted');
-//     //     }
-//     // })
-// };
 
 const initTable = (name: string): void => {
     database.query(`drop table if exists ${name}`);
@@ -82,24 +48,5 @@ const insert = (name: string, inventory: insert) => {
     const query = `insert into ${name}(name, stock) values ?`;
     database.query(query, [inventory]);
 }
-
-// const test = (data: inventory_manager, callback: Function): CallableFunction => {
-//     // database.query(`INSERT INTO Inventory(name, stock)
-//     //     VALUES ('carrots', 5)
-//     // `, err => {
-//     //     if(err) console.log(err);
-//     //     console.log('it inserted');
-//     // });
-//     let items: inventory_manager[] = [];
-//     database.query(`SELECT * FROM Inventory WHERE Restaurant_Id = ${data.restaurant_id}`, (err, result) => {
-//         if(err) console.error(err);
-
-//         const row = (<RowDataPacket> result);
-//         const inventory = row as inventory_manager;
-//         items
-//         return callback(data, items);
-//     });
-//     return callback(items);
-// }
 
 export default { insert, initTable, getIngredients, update,  };
