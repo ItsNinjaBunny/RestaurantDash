@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import styled from 'styled-components'
 import Navbar from '../../components/Navbar'
 import { H1 } from '../Login/LoginElements'
@@ -8,6 +8,7 @@ import Inventory from './inventory'
 import Orders from './orders'
 import Welcome from './welcome'
 import '../../App.css'
+import DishScreen from './DishScreen'
 const MenuBox = styled.div`
 position: fixed;
 width: 15vw;
@@ -21,7 +22,7 @@ background-color: transparent;
 text-align: center;
 list-style-type: none;
 left: 7rem;
-transition:0.7s;
+transition:0.6s;
 ${props => {
   if (props.toggle==='dishes'||props.toggle==='coupons'||props.toggle==='inventory'||props.toggle==='orders') {
     return `
@@ -51,7 +52,8 @@ const ContentBox = styled.div`
   right:7vw;
   opacity:1;
   border-radius:1.5%;
-  transition:1s;
+  transition:0.7s;
+  transition-timing-function:ease-in;
   border:.1vw solid #000;
  `
 const Landing = styled.div`
@@ -93,7 +95,43 @@ const Business = () => {
       setActive(x);
     }, 400);
   };
+ 
+  
+ const [scrollPosition, setScrollPosition] = useState(0);
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+    setScrollPosition(position);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [ChangeBox(scrollPosition)]);
+  function ChangeBox(){
+    if(scrollPosition>20){
+      var interval = setInterval(()=>{ 
+        document.getElementById("contentScroll").classList.add("showUser");
+           clearInterval(interval);
+        
+     }, 400);
+    
+      
+    }else{
+     
+      var interval = setInterval(()=>{ 
+        document.getElementById("contentScroll").classList.remove("showUser");
+           clearInterval(interval);
+        
+     }, 400);
+      
+    }
+      
+  }
   return (
+    
     <>
     <Landing></Landing>
     <Navbar>
@@ -105,9 +143,9 @@ const Business = () => {
           <Li  className={active==='coupons' ? 'link' : ''} onClick={() => {switchBusiness("coupons")}}>Coupons</Li>
           <Li  className={active==='orders' ? 'link' : ''} onClick={() => {switchBusiness("orders")}}>Orders</Li>
       </MenuBox>
-      <ContentBox className={active==='inventory'? 'fade' : ''}>
+      <ContentBox  id="contentScroll" className={active==='inventory'? 'fade' : ''}>
       {active==="welcome" && <Welcome></Welcome>}
-          {active==="dishes" && <Dishes></Dishes>}
+          {active==="dishes" && <DishScreen></DishScreen>}
           {active==='coupons' && <Coupons></Coupons>}
           {active==='inventory' && <Inventory></Inventory>}
           {active==='orders' && <Orders></Orders>}

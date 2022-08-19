@@ -15,7 +15,7 @@ import Client from './pages/client/index'
 import Business from './pages/owner';
 function App() {
 
-
+  console.warn="gay";
    return (
     <BrowserRouter>
     <main>

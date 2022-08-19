@@ -14,6 +14,7 @@ const BoxContainer = styled(motion.div)`
   ${props => {
     if (props.toggle==='start') {
       return `
+      animation: signin 1s;
       padding-top:3vw;
       width: 30rem;
       height:30rem;
@@ -22,12 +23,13 @@ const BoxContainer = styled(motion.div)`
       border-radius: 19px;
       border:1px solid  #fff;;
       box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
-      position: relative;
+      position: absolute;
       left:14rem;
       overflow: hidden;
-      top:12vw; 
+      top:12vw;
+      transition:.7s;
       opacity:1;
-      transition:0.5s;
+     
      
      
       `;
@@ -91,26 +93,26 @@ const InnerContainer = styled.div`
   width: 100%;
   display: flex;
     opacity:1;
-  
-    transiiton:.7s;
+    overflow:hidden!important;
+    transiiton:1s;
   ${props => {
     if (props.toggle==='start') {
       return(`
       align-items:center;
-      animation:fade .6s  ease-in;
+      animation:fade 1s;
       opacity:1;
       `)
      }
     if (props.toggle==='signup') {
      return(`
      align-items:center;
-     animation:fade2 1s  ease-in;
+     animation:fade2 1s  ;
      opacity:1;
      `)
     }else{
       return(`
       align-items:center;
-      animation:fade 1s ease-in;
+      animation:fade 1s ;
       opacity:1;
      `)
 
@@ -167,7 +169,7 @@ export function AccountBox(props) {
     }, 400);
   };
 
-  
+  var x = {active:'start',html:<SignInForm/>};
   
   const contextValue = { switchToSignup, switchToSignin };
 
@@ -182,7 +184,7 @@ export function AccountBox(props) {
       <UserIcon toggle={active} />
       <BoxContainer toggle={active}>
         <InnerContainer toggle={active}>
-          {active === "start" && <SignInForm />}
+          {active ===x.active&& x.html}
           {active === "signin" && <SignInForm />}
           {active === "signup" && <SignupForm />}
         </InnerContainer>

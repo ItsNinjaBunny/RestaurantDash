@@ -96,8 +96,12 @@ class Inventory extends React.Component {
                     <H2>Qty</H2>
                 </InventoryColNames>
                 <AddInventoryForm>
+                <label>Name</label>
                 <input rows="4" cols="50" value={this.state.postName} onChange={(e)=>this.handleChange(e,0)} ></input>
+                <br></br>
+                <label>Qty</label>
                 <input rows="4" cols="50" value={this.state.postQty} onChange={(e)=>this.handleChange(e,1)} ></input>
+                <br></br>
                 <button className="button" onClick={(e)=> this.appendData(e)}>Append</button>
                 </AddInventoryForm>
                 <UpdateInventoryForm>

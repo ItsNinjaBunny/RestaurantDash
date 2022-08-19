@@ -1,30 +1,33 @@
 import React from 'react'
 
-function Card(props) {
+function CouponCard(props) {
     const dragStart = e => {
         const target = e.target;
+        e.dataTransfer.setData('card_id', target.id);
         var j = JSON.stringify(props.item);
-        e.dataTransfer.setData('item', j);
+        e.dataTransfer.setData("qty", j);
         
+        //e.dataTransfer.setData('qty', props.item);
         setTimeout(()=>{
           
         },0);
     }
     const dragOver = e =>{
         e.stopPropagation();
+
     }
 
   return (
-    <div id={props.item.id}
+    <div item={props.item} id={props.id}
+    
     draggable={props.draggable}
     className={props.className}
     onDragStart={dragStart}
     onDragOver={dragOver}>
       {props.children}
-      <h1> {props.item.name}</h1>
-
+      
     </div>
   )
 }
 
-export default Card
+export default CouponCard

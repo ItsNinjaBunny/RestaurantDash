@@ -45,10 +45,10 @@ class MyForm extends Component {
     render() {
         
         return (
-            <form >
-                <label>User Name</label>
-                <input type="text" value={this.state.username} onChange={(e) => this.handleChange(e, 1)}></input>
-                <label>Email address</label>
+            <form>
+               
+                <p>{this.state.username}</p>
+               
                 <input type="text" value={this.state.qty} onChange={(e) => this.handleChange(e, 0)}></input>
 
               

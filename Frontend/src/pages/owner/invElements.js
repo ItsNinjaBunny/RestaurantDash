@@ -4,18 +4,20 @@ export const  H1 = styled.h1`
 box-shadow:1px 1px 1px 1px #fff;
 font-weight:150;
 font-size:5vw;
-position:absolute; 
+position:relative; 
 text-align:left;
 left:11vw;
-top:1vw;
+top:3vw;
 z-index:1;
+width:21vw;
+padding-left:1vw;
 background-color:#fff;
-padding:1vw;
+
 
 `
 export const H2 = styled.h2`
 float:left;
-margin:1.5vw 0vw 3vw 5.5vw;
+margin:1vw 0vw 1vw 5.5vw;
 
 font-size:1.5vw;
 font-weight:100;
@@ -82,7 +84,7 @@ top:0vw;
 `
 export const InventoryColNames = styled.div`
 width:23vw;
-height:5vw;
+height:auto;
 margin:2vw 2vw 3vw 15vw;
 border:1px solid;
 text-align:center;

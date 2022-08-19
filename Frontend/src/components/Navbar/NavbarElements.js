@@ -33,6 +33,7 @@ export const Nav = styled.nav`
           border-radius:0;
           text-align:right;
           z-index:5;
+          border-bottom:.1vw solid #000;
       `;
     
     }

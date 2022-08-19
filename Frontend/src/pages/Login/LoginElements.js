@@ -5,6 +5,7 @@ export const BoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+ 
   
 `;
 
@@ -62,10 +63,10 @@ export const Input = styled.input`
     background:transparent;
     border:none;
     position:relative;
-    height:2rem;
-    left:2.3vw;
+    height:3.5vw
+    left:2.5vw;
     top:-.4vw;
-    width:14.5rem;
+    width:15.5rem;
    color:#fff;
    font-weight:100;
    letter-spacing:1px;
@@ -81,9 +82,10 @@ export const Input = styled.input`
 export const H1 = styled.h1`
     padding:1vw;
     position:relative;
+   
     color:#fff;
     font-weight:100;
-    top:-2vw;
+    top:-1vw;
 `
 
 export const P1 = styled.p`
@@ -119,8 +121,8 @@ export const Email = styled(FaEnvelope)`
 color:#fff;
 dispaly:block;
 position:relative;
-left:1.1rem;
-top:.2rem;
+left:0.5rem;
+
 font-size: 1.8rem;
 cursor: pointer;
 `
@@ -128,8 +130,7 @@ export const User= styled(FaUser)`
 color:#fff;
 dispaly:block;
 position:relative;
-left:1.1rem;
-top:.2rem;
+left:0.5rem;
 font-size: 1.8rem;
 cursor: pointer;
 `
@@ -137,8 +138,7 @@ export const SecretKey= styled(FaUserLock)`
 color:#fff;
 dispaly:block;
 position:relative;
-left:1.1rem;
-top:.2rem;
+left:0.5rem;
 font-size: 1.8rem;
 cursor: pointer;
 `
@@ -146,13 +146,12 @@ export const Address= styled(FaMapMarked)`
 color:#fff;
 dispaly:block;
 position:relative;
-left:1.1rem;
-top:.2rem;
+left:0.5rem;
 font-size: 1.8rem;
 cursor: pointer;
 `
 export const EmailBox = styled.div`
-height:2.2rem;
+height:2.3vw;
 width:20rem;
 padding:.2rem;
 border: 1px solid #fff; 
@@ -168,8 +167,8 @@ export const Password = styled(FaKey)`
 color:#fff;
 dispaly:block;
 position:relative;
-left:1.1rem;
-top:.2rem;
+left:0.5rem;
+
 font-size: 1.8rem;
 cursor: pointer;
    
@@ -286,7 +285,7 @@ export const UserLoginBox = styled.div`
 `
 
 export const PasswordBox = styled.div`
-height:2.2rem;
+height:2.3vw;
 width:20rem;
 
 padding:.2rem;

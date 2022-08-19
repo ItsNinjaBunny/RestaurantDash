@@ -11,24 +11,15 @@ body{
     justify-content: space-between;
     width: 100%;
     max-width:768px;
-    height:auto;
-    min-height:10vw;
+  
     overflow: hidden;
     margin:0 auto;
     padding:1vw;
 }
-#content5{
-    height:auto;
-    width:100%;
-    
-}
-#navmini{
-    position:relative
-}
 .flexbox .board{
     display:flex;
     flex-direction: column;
-    
+    height:90vw;
     width:100%;
     max-width:300px;
     background-color:green;
@@ -40,14 +31,9 @@ body{
     background-color:red;
 }
 
-.showUser{
-    padding-top: 15vw !important;;
-  
-    margin:0 auto;
-    width:100%!important;
-    top:0vw!important;
+.flexbox .board3 .card2{
    
-    right:0vw!important;
-    
-   
+    padding:1vw 1vw ;
+    cursor:pointer;
+    background-color:yellow;
 }
