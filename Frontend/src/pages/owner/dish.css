@@ -1,0 +1,53 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+body{
+    background-color:#fff;
+}
+.flexbox{
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width:768px;
+    height:auto;
+    min-height:10vw;
+    overflow: hidden;
+    margin:0 auto;
+    padding:1vw;
+}
+#content5{
+    height:auto;
+    width:100%;
+    
+}
+#navmini{
+    position:relative
+}
+.flexbox .board{
+    display:flex;
+    flex-direction: column;
+    
+    width:100%;
+    max-width:300px;
+    background-color:green;
+}
+.flexbox .board .card{
+   
+    padding:1vw 1vw ;
+    cursor:pointer;
+    background-color:red;
+}
+
+.showUser{
+    padding-top: 15vw !important;;
+  
+    margin:0 auto;
+    width:100%!important;
+    top:0vw!important;
+   
+    right:0vw!important;
+    
+   
+}
