@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Item from '../interfaces/Item';
-import { insert, update } from '../interfaces/Insert';
+import { update } from '../interfaces/Insert';
 import Database from '../database/InventoryDatabase';
 
 const initTable = (req: Request, res: Response): Response => {
@@ -33,4 +33,4 @@ const update = (req: Request, res: Response): Response | void => {
     res.send('hi');
 }
 
-export default { initTable, /*insert,*/ getIngredients, update,  };
+export default { initTable, getIngredients, update,  };

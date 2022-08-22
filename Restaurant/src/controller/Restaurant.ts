@@ -120,4 +120,17 @@ const getCuisine = async(req: Request, res: Response) => {
     });
 }
 
-export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getCuisine };
+const getRestaurantByItem = async(req: Request, res: Response) => {
+    const { item, restaurant } = req.body;
+    return res.json(await database.getRestaurantByItem(String(item), String(restaurant)));
+}
+
+const updateDish = async(req: Request, res: Response) => {
+    const restaurant:string = req.body.name;
+    const dish = req.body.recipe as Recipe;
+
+    database.updateDish(String(restaurant), dish);
+    return res.status(200).json('updated');
+}
+
+export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getCuisine, getRestaurantByItem, updateDish };

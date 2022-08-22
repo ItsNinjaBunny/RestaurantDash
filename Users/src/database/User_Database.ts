@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { ListCollectionsCursor, MongoClient, ObjectId } from 'mongodb';
 import { mongo } from '../config/config';
 import { user } from '../interfaces/User';
 import login from '../interfaces/Credentials';
@@ -31,7 +31,7 @@ const getAllUsers = async(): Promise<user[]> => {
     return results;
 }
 
-const getUser = async(id: string): Promise<user[] | null> => {
+const getUser = async(id: string): Promise<user> => {
     await client.connect();
     const options = {
         _id : 1,
@@ -45,8 +45,15 @@ const getUser = async(id: string): Promise<user[] | null> => {
         .limit(1)
         .toArray() as user[];
     client.close();
-    //@ts-ignore
-    return user;
+
+    return user[0];
+}
+
+const updateCart = async(id: string, cart: {}) => {
+    await client.connect();
+    await collection.user.updateOne({ _id: id}, { $set: { cart: cart}});
+    client.close();
+    return;
 }
 
 export const containsToken = async(token: string) => {
@@ -70,4 +77,4 @@ export const getTokens = async(token: string):Promise<boolean> => {
     return results.length > 0 ? false : true;
 }
 
-export default { register, login, getAllUsers, getUser };
+export default { register, login, getAllUsers, getUser, updateCart };

@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, ObjectId, ResumeToken } from 'mongodb';
 import { mongo } from '../config/config';
 import license from '../interfaces/License';
 import Recipe from '../interfaces/Item';
@@ -38,4 +38,27 @@ const findCuisine = async(cuisine: string) => {
             .project({ _id : 1, 'menu_items.ingredients' : 0 }).sort({ name : 1 }).toArray();
 };
 
-export default { initRestaurant, addRecipe, findCuisine };
+const getRestaurantByItem = async(item: string, restaurant: string) => {
+    return await collections.restaurants.find({
+        $and: [
+            { name: { $regex: restaurant, $options: '$i' }},
+            { "menu_items.dish_name":  { $regex: item, $options: '$i' }}
+        ]
+    }).toArray() as Restaurant[];
+}
+
+const updateDish = async(restaurant: string, recipe: Recipe) => {
+    const rest = await collections.restaurants.findOne({ name : restaurant }) as Restaurant;
+    const index = rest.menu_items.findIndex(item => {
+        return item.dish_name === recipe.dish_name;
+    });
+    // console.log(index);
+    rest.menu_items[index] = recipe;
+    // console.log(rest.menu_items);
+    await collections.restaurants.replaceOne({
+        _id : rest._id
+    }, rest);
+    console.log('done!');
+}
+
+export default { initRestaurant, addRecipe, findCuisine, getRestaurantByItem, updateDish };

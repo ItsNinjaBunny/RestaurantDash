@@ -2,8 +2,7 @@ version: '3.8'
 
 networks:
   dash:
-    external:
-      false
+    external: false
 
 services:
   inventory_management:
@@ -13,10 +12,10 @@ services:
     volumes:
       - inventory:/var/lib/mysql
     environment:
-      MYSQL_DATABASE : Inventory
-      MYSQL_USER : admin
-      MYSQL_PASSWORD : admin
-      MYSQL_ROOT_PASSWORD : root
+      MYSQL_DATABASE: Inventory
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - dash
     ports:
@@ -49,14 +48,25 @@ services:
       - 27018:27017
     restart: always
 
+  order_management:
+    image: mongo:latest
+    networks:
+      - dash
+    volumes:
+      - orders:/data/db
+    ports:
+      - 27019:27017
+    restart: always
+
 volumes:
   inventory:
-    external : true
+    external: true
   users:
-    external : true
+    external: true
   restaurants:
-    external : true
-
+    external: true
+  orders:
+    external: true
   # user-api:
   #   # image: braydenwongcode/restaurant-dash-users:latest
   #   build:

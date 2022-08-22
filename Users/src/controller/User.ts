@@ -7,9 +7,8 @@ import database, { getEmail, getTokens } from '../database/User_Database';
 import Credentials from '../interfaces/Credentials';
 import license from '../interfaces/License';
 import coupon from '../interfaces/Coupon';
-import cart from '../interfaces/Item';
+import Item from '../interfaces/Item';
 import { request } from '../helpers/request';
-import { getAllJSDocTagsOfKind } from 'typescript';
 
 const login = async(req: Request, res: Response): Promise<Response> => {
     let temp = req.body as Credentials;
@@ -118,11 +117,47 @@ const getToken = async(req: Request, res: Response): Promise<Response> => {
 }
 
 const getUser = async(req: Request, res: Response): Promise<Response> => {
-    //@ts-ignore
     const user = await database.getUser(String(req.id));
     if(user === null)
         return res.status(200).json('no user was found');
-    return res.status(200).json(user[0]);
+    return res.status(200).json(user);
 }
 
-export default { login, register_account, getAllUsers, getToken, getUser, }
+const addToCart = async(req: Request, res: Response) => {
+    const items = req.body.cart.items as Item[];
+    const coupons = req.body.cart.coupon;
+    const total = req.body.cart.total;
+    if(items.length === 0)
+        return res.status(500).json('no item added to cart');
+    const id = req.id;
+    if(!id)
+        return res.status(500).json('invalid session');
+
+
+    const user = await database.getUser(id) as user;
+    items.forEach((item: Item) => {
+        let cartItem = {} as Item;
+        let price = 0;
+        console.log(item.quantity);
+        //@ts-ignore
+        if(item.quantity > 1)
+            //@ts-ignore
+            for(let i = 0; i < item.quantity; i++) 
+                price += item.price;
+        cartItem.dish_name = item.dish_name;
+        cartItem.price = price;
+
+        if(item.quantity === 1) 
+            price = item.price;
+            
+        if(user.cart !== undefined) {
+            user.cart.basket.push(cartItem);
+            user.cart.total += price;
+        }
+    });
+    //@ts-ignore
+    database.updateCart(user._id, user.cart);
+    return res.status(200).json(user.cart);
+}
+
+export default { login, register_account, getAllUsers, getToken, getUser, addToCart, }
