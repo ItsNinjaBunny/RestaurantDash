@@ -8,7 +8,7 @@ const router = Router();
 router.get('/ingredients', controller.getIngredients);
 router.post('/initTable', controller.initTable);
 
-router.patch('/update', verify, controller.update);
+router.patch('/update', controller.update);
 
 
 export = router;

@@ -11,7 +11,6 @@ const database = mysql.createConnection({
 });
 
 const update = (table: string, inventory: insert) => {
-    console.log(inventory);
     database.query(`drop table if exists ${table}`);
     database.query(`create table ${table}(
         id int primary key not null auto_increment,

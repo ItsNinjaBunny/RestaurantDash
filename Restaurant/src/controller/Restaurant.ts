@@ -6,6 +6,7 @@ import { Restaurant, init } from '../interfaces/Restaurant';
 import database, { keys } from '../database/Restaurant_Database';
 import Ingredient from '../interfaces/Ingredient';
 import Recipe from '../interfaces/Item';
+import Item_Menu from '../interfaces/Item';
 
 const getKeys = async(req: Request, res: Response): Promise<Response> => {
     if(String(req.body.secret) === server.secret )
@@ -39,16 +40,21 @@ const getInventory = async(req: Request, res: Response): Promise<Response> => {
 }
 
 const updateInventory = async(req: Request, res: Response): Promise<Response | void> => {
-    type insert = {
-        id: string;
-        inventory : [string, number][];
+    type update = {
+        ingredients: [{ name: string, stock: number }];
+        type: string;
     }
-    const data = req.body as insert;
+    let inventory: [string, number][] = [];
+    const data = req.body as update;
+    if(data.ingredients.length === 1)
+        inventory = [[data.ingredients[0].name, data.ingredients[0].stock]];
+    else 
+        data.ingredients.forEach(item => inventory.push([item.name, item.stock]));
     const response = await request('http://localhost:4000/update', 'patch', {
         data: {
-            db: data.id,
-            inventory: data.inventory,
-            type: 'update'
+            db: req.id,
+            inventory: inventory,
+            type: data.type
         }
     });
     if(response !== undefined)
@@ -57,10 +63,13 @@ const updateInventory = async(req: Request, res: Response): Promise<Response | v
 }
 
 const addRecipe = async(req: Request, res: Response) => {
-    const recipe = req.body.recipe as Recipe;
+    const temp = req.body;
+    const recipe = temp.recipe as Recipe;
+    console.log()
+    console.log(recipe);
+    console.log('ingredients');
     const id = String(req.id);
     
-    // console.log(Object.keys(recipe));
     const newIngredients = (): boolean => {
         let bool = false;
         recipe.ingredients.forEach(ingredient => {
@@ -99,7 +108,6 @@ const getCuisine = async(req: Request, res: Response) => {
         res.status(500).json({
             error: 'no cuisine was inserted'
         });
-    const start = Date.now();
     const results = await database.findCuisine(type) as Restaurant[];
     results.forEach(restaurant => {
         restaurant.menu_items.forEach((item: Recipe) => {
@@ -107,15 +115,15 @@ const getCuisine = async(req: Request, res: Response) => {
                 const index = restaurant.menu_items.findIndex((temp: Recipe) => {
                     return temp === item;
                 });
-                if(index === 0)
+                if(index === 0) 
                     restaurant.menu_items.shift();
                 else 
                     restaurant.menu_items = restaurant.menu_items.splice(0, index);
             }
         });
     });
+
     res.status(200).json({
-        elapsed_time : `${Date.now() - start} ms`,
         restaurants: results
     });
 }
@@ -125,12 +133,36 @@ const getRestaurantByItem = async(req: Request, res: Response) => {
     return res.json(await database.getRestaurantByItem(String(item), String(restaurant)));
 }
 
+const getBusinessDishes = async(req: Request, res: Response) => {
+    return res.status(200).json(await database.getDishes(String(req.id)));
+}
+
+const getDishes = async(req: Request, res: Response) => {
+    return res.status(200).json(await database.getDishes(String(req.body.id)));
+}
+
 const updateDish = async(req: Request, res: Response) => {
-    const restaurant:string = req.body.name;
+    const id = String(req.id);
     const dish = req.body.recipe as Recipe;
 
-    database.updateDish(String(restaurant), dish);
+    database.updateDish(id, dish);
     return res.status(200).json('updated');
 }
 
-export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getCuisine, getRestaurantByItem, updateDish };
+const getCuisineArrays = async(req: Request, res: Response) => {
+    const menus = await database.getMenuItems() as Item_Menu[];
+    const menu_items: any = {};
+    console.log(menu_items);
+    menus.forEach(item => {
+        if(item.cuisine in menu_items) 
+            menu_items[item.cuisine].push(item);
+        else {
+            menu_items[item.cuisine] = [];
+            menu_items[item.cuisine].push(item)
+        }
+    });
+    console.log(menu_items);
+    return res.send(menu_items);
+}
+
+export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getCuisine, getRestaurantByItem, updateDish, getDishes, getBusinessDishes, getCuisineArrays };
