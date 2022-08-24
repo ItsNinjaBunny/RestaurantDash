@@ -201,34 +201,24 @@ const getCuisineArrays = async(req: Request, res: Response) => {
 
 export const test = async(req: Request, res: Response) => {
     let restaurants = await database.getMenuItems() as Restaurant[];
-    const menu_items: any = {};
+    const allItems: any = {};
+    type restaurantMenu = { name: string, menu_items: Recipe[]};
+    
     restaurants.forEach(restaurant => {
-        let menu = restaurant.menu_items;
-        menu.forEach(item => {
-            if(item.cuisine in menu_items) {
-                menu.forEach(menuItem => {
-                    if(menuItem.cuisine !== item.cuisine) {
-                        const index = restaurant.menu_items.findIndex(temp => temp === item);
-                        menu = menu.splice(index, 1);
-                    }
-                });
-                restaurant.menu_items = menu;
-                menu_items[item.cuisine].push(restaurant);
-            }
-            else {
-                menu_items[item.cuisine] = [];
-                menu.forEach(menuItem => {
-                    if(menuItem.cuisine !== item.cuisine) {
-                        const index = restaurant.menu_items.findIndex(temp => temp === item);
-                        menu = menu.splice(index, 1);
-                    }
-                });
-                restaurant.menu_items = menu;
-                menu_items[item.cuisine].push(restaurant);
+        restaurant.menu_items.forEach(menuItem => {
+            if(menuItem.cuisine in allItems) {
+                if(allItems[menuItem.cuisine].length >= 1) {
+                    allItems[menuItem.cuisine].forEach((rest: restaurantMenu) => {
+                        if(rest.name === restaurant.name)
+                            rest.menu_items.push(menuItem);
+                    });
+                }
+            } else {
+                allItems[menuItem.cuisine] = [{ name: restaurant.name, menu_items: [menuItem] }];
             }
         });
     });
-    return res.json(menu_items);
+    return res.json(allItems);
 }
 
 export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getCuisine, getRestaurantByItem, updateDish, getDishes, getBusinessDishes, getCuisineArrays }

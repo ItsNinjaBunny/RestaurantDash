@@ -5,7 +5,6 @@ import coupon from './Coupon';
 export interface Restaurant {
     _id : ObjectId,
     name : string,
-    ethnicities: string[];
     menu_items : item[],
     coupons : coupon[],
     location : {
@@ -20,7 +19,6 @@ export const init = (options?: Partial<Restaurant>): Restaurant => {
     return {
         _id : new ObjectId(),
         name : options?.name,
-        ethnicities: [],
         menu_items: [],
         coupons: [],
         location: {
