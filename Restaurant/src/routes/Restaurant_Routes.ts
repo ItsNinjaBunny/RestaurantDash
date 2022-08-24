@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import controller from '../controller/Restaurant';
+import controller, { test } from '../controller/Restaurant';
 import { verify } from '../middleware/verify';
 
 const router = Router();
@@ -11,6 +11,7 @@ router.get('/restaurant', controller.getRestaurantByItem);
 router.get('/restaurant/dishes', controller.getDishes);
 router.get('/restaurants/dishes', verify, controller.getBusinessDishes);
 router.get('/menuItems', controller.getCuisineArrays);
+router.get('/test', test)
 
 router.patch('/updateInventory', verify, controller.updateInventory);
 router.patch('/update/dish', verify, controller.updateDish);

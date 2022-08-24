@@ -53,17 +53,14 @@ const getRestaurantByItem = async(item: string, restaurant: string) => {
 }
 
 const updateDish = async(id: string, recipe: Recipe) => {
-    const rest = await collections.restaurants.findOne({ owner : id }) as Restaurant;
-    const index = rest.menu_items.findIndex(item => {
+    const restaurant = await collections.restaurants.findOne({ owner : id }) as Restaurant;
+    const index = restaurant.menu_items.findIndex(item => {
         return item.dish_name === recipe.dish_name;
     });
-    // console.log(index);
-    rest.menu_items[index] = recipe;
-    // console.log(rest.menu_items);
+    restaurant.menu_items[index] = recipe;
     await collections.restaurants.replaceOne({
-        _id : rest._id
-    }, rest);
-    console.log('done!');
+        _id : restaurant._id
+    }, restaurant);
 }
 
 const getDishes = async(id: string) => {
@@ -71,7 +68,7 @@ const getDishes = async(id: string) => {
 }
 
 const getMenuItems = async() => {
-    return await collections.restaurants.find({}).project({ _id: 0, menu_items : 1 }).toArray() as Item_Menu[];
+    return await collections.restaurants.find({}).toArray() as Restaurant[];
 }
 
 export default { initRestaurant, addRecipe, findCuisine, getRestaurantByItem, updateDish, getRestaurantById, getDishes, getMenuItems };

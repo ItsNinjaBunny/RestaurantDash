@@ -9,18 +9,18 @@ const initTable = (req: Request, res: Response): Response => {
     return res.status(200).json('done');
 }
 
-const getIngredients = (req: Request, res: Response): Response | void => {
+const getIngredients = (req: Request, res: Response) => {
     const name = req.body.id;
     let inventory: Item[] = [];
     Database.getIngredients(name, function(results: Item[]) {
         inventory = results;
     });
     setTimeout(() => {
-        inventory.length === 0 ? res = res.status(500).json({
+        inventory === null ? res = res.status(500).json({
             error: 'the inventory you\'re looking for doesn\'t exist'
         }) :  res = res.status(200).json({ inventory : inventory });
         return res;
-    }, 25);
+    }, 30);
     return;
 }
 

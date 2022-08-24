@@ -11,10 +11,6 @@ export interface user {
     password : string;
     license : license
     coupons ?: coupon[];
-    cart ?: {
-        basket : item[];
-        total : number;
-    },
     order_history?: Order[];
     location : {
         type: string;

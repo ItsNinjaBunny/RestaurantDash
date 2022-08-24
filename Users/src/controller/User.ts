@@ -55,17 +55,11 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
             error: 'email already exists'
         });
     const key = req.body.license.key;
-    
     if(key === '') {
         account.license.type = 'client';
-        account.cart = {
-            basket : [],
-            total : 0
-        };
-        account.coupons = [];
     }
     if(key !== '') {
-        const response = await request('http://localhost:3001/keys', 'get', {
+        const response = await request('http://localhost:3500/keys', 'get', {
             data : { 
                 key : key,
                 restaurant: String(req.body.license.restaurant),
@@ -82,7 +76,7 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
                     account.license.key = results[i].key;
                     account.license.restaurant = results[i].restaurant;
                     account.license.type = 'business';
-                    request('http://localhost:3001/register', 'post', {
+                    request('http://localhost:3500/register', 'post', {
                         data: {
                             owner: account._id,
                             name: results[i].restaurant,
@@ -103,7 +97,7 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
     account.password = bcrypt.hashSync(account.password, 10);
     database.register(account);
     return res.status(200).json({
-        url : 'http://192.168.1.2:5000/Home',
+        url : 'http://192.168.1.2:5000/Login',
         account
     });
 }
@@ -123,41 +117,5 @@ const getUser = async(req: Request, res: Response): Promise<Response> => {
     return res.status(200).json(user);
 }
 
-const addToCart = async(req: Request, res: Response) => {
-    const items = req.body.cart.items as Item[];
-    const coupons = req.body.cart.coupon;
-    const total = req.body.cart.total;
-    if(items.length === 0)
-        return res.status(500).json('no item added to cart');
-    const id = req.id;
-    if(!id)
-        return res.status(500).json('invalid session');
 
-
-    const user = await database.getUser(id) as user;
-    items.forEach((item: Item) => {
-        let cartItem = {} as Item;
-        let price = 0;
-        console.log(item.quantity);
-        //@ts-ignore
-        if(item.quantity > 1)
-            //@ts-ignore
-            for(let i = 0; i < item.quantity; i++) 
-                price += item.price;
-        cartItem.dish_name = item.dish_name;
-        cartItem.price = price;
-
-        if(item.quantity === 1) 
-            price = item.price;
-            
-        if(user.cart !== undefined) {
-            user.cart.basket.push(cartItem);
-            user.cart.total += price;
-        }
-    });
-    //@ts-ignore
-    database.updateCart(user._id, user.cart);
-    return res.status(200).json(user.cart);
-}
-
-export default { login, register_account, getAllUsers, getToken, getUser, addToCart, }
+export default { login, register_account, getAllUsers, getToken, getUser, }

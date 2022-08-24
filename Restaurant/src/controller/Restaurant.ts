@@ -63,11 +63,9 @@ const updateInventory = async(req: Request, res: Response): Promise<Response | v
 }
 
 const addRecipe = async(req: Request, res: Response) => {
+    console.log(req.body);
     const temp = req.body;
     const recipe = temp.recipe as Recipe;
-    console.log()
-    console.log(recipe);
-    console.log('ingredients');
     const id = String(req.id);
     
     const newIngredients = (): boolean => {
@@ -150,19 +148,87 @@ const updateDish = async(req: Request, res: Response) => {
 }
 
 const getCuisineArrays = async(req: Request, res: Response) => {
-    const menus = await database.getMenuItems() as Item_Menu[];
+    let restaurants = await database.getMenuItems() as Restaurant[];
     const menu_items: any = {};
-    console.log(menu_items);
-    menus.forEach(item => {
-        if(item.cuisine in menu_items) 
-            menu_items[item.cuisine].push(item);
-        else {
-            menu_items[item.cuisine] = [];
-            menu_items[item.cuisine].push(item)
+    restaurants.forEach(restaurant => {
+        if(restaurant.menu_items.length === 0) {
+            const index = restaurants.findIndex(item => restaurant === item);
+            restaurants = restaurants.splice(index, 1);
+            return;
         }
+        restaurant.menu_items.forEach(item => {
+            if(item.cuisine in menu_items) 
+                menu_items[item.cuisine].push(restaurant);
+            else {
+                menu_items[item.cuisine] = [];
+                menu_items[item.cuisine].push(restaurant)
+            }
+        });
     });
-    console.log(menu_items);
-    return res.send(menu_items);
+
+    // restaurants.forEach(restaurant => {
+    //     if(restaurant.menu_items.length === 0) {
+    //         const index = restaurants.findIndex(item => restaurant === item);
+    //         restaurants = restaurants.splice(index, 1);
+    //         return;
+    //     }
+    //     restaurant.menu_items.forEach(item => {
+    //         if(item.cuisine in menu_items) {
+    //             restaurant.menu_items.forEach(menu => {
+    //                 if(item.cuisine !== menu.cuisine) {
+    //                     const index = restaurant.menu_items.findIndex(item => item === menu);
+    //                     console.log('removed index:', index);
+    //                     restaurant.menu_items = restaurant.menu_items.splice(index, 1);
+    //                 }  
+    //             });
+    //             menu_items[item.cuisine].push(restaurant);
+    //         }
+    //         else {
+    //             menu_items[item.cuisine] = [];
+    //             restaurant.menu_items.forEach(menu => {
+    //                 if(item.cuisine !== menu.cuisine) {
+    //                     const index = restaurant.menu_items.findIndex(item => item === menu);
+    //                     console.log('index removed:', index);
+    //                     restaurant.menu_items = restaurant.menu_items.splice(index, 1);
+    //                 }  
+    //             });
+    //             menu_items[item.cuisine].push(restaurant)
+    //         }
+    //     });
+    // });
+    return res.json(menu_items);
 }
 
-export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getCuisine, getRestaurantByItem, updateDish, getDishes, getBusinessDishes, getCuisineArrays };
+export const test = async(req: Request, res: Response) => {
+    let restaurants = await database.getMenuItems() as Restaurant[];
+    const menu_items: any = {};
+    restaurants.forEach(restaurant => {
+        let menu = restaurant.menu_items;
+        menu.forEach(item => {
+            if(item.cuisine in menu_items) {
+                menu.forEach(menuItem => {
+                    if(menuItem.cuisine !== item.cuisine) {
+                        const index = restaurant.menu_items.findIndex(temp => temp === item);
+                        menu = menu.splice(index, 1);
+                    }
+                });
+                restaurant.menu_items = menu;
+                menu_items[item.cuisine].push(restaurant);
+            }
+            else {
+                menu_items[item.cuisine] = [];
+                menu.forEach(menuItem => {
+                    if(menuItem.cuisine !== item.cuisine) {
+                        const index = restaurant.menu_items.findIndex(temp => temp === item);
+                        menu = menu.splice(index, 1);
+                    }
+                });
+                restaurant.menu_items = menu;
+                menu_items[item.cuisine].push(restaurant);
+            }
+        });
+    });
+    return res.json(menu_items);
+}
+
+export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getCuisine, getRestaurantByItem, updateDish, getDishes, getBusinessDishes, getCuisineArrays }
