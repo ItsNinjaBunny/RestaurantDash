@@ -41,16 +41,12 @@ const getUserOrders = async(req: Request, res: Response) => {
 
 const getByStatus = async(req: Request, res: Response) => {
     const { status, id } = req.params;
-    console.log('id:', req.params.id);
-    console.log('body:', req.params);
     const user_data = await orderService.getUser(String(id));
     if(user_data) {
         const user_id = String(user_data.data._id);
         const rest_data = await orderService.getRestaurant(user_id);
         if(rest_data) {
             const rest_id = rest_data.data.id;
-            console.log(rest_id);
-            console.log(rest_id._id);
             if(status === undefined)
                 return res.status(500).json('status is undefined');
             const orders = await orderService.findByStatus(rest_id._id, String(status));
@@ -80,7 +76,6 @@ const updateOrder = async(req: Request, res: Response) => {
 const createOrder = async(req: Request, res: Response) => {
     const order = req.body as Order;
     order.date = new Date();
-
     const token = String(order.user_id);
     const user_data = await orderService.getUser(token);
     if(user_data) {
