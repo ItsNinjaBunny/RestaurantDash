@@ -6,9 +6,8 @@ const RestTypeCard = (props) => {
         position:relative;
         top:2vw;
         left:10%;
-        background:#656565;
+        background:#f5fafa;
         margin:1vw;
-        border:2px solid #fff;
         border-radius:5vw;
         width:80%;
         padding:4vw;
@@ -20,9 +19,8 @@ const RestTypeCard = (props) => {
         }
     `
     const H1 = styled.h1`
-      color:#fff;
+      color: #007fff;
       font-weight:100;
-
     `
     const IMG = styled.img`
     margin:0 auto;

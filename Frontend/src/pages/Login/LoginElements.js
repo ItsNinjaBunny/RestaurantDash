@@ -14,7 +14,7 @@ export const FormContainer = styled.form`
   align-items: center;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 2.5px rgba(15, 15, 15, 0.19);
+ 
 `;
 
 export const MutedLink = styled.a`
@@ -30,25 +30,29 @@ export const BoldLink = styled.a`
   font-weight: 500;
   text-decoration: none;
   margin: 0 4px;
+  z-index:5;
 
 `;
 
 
 
 export const SubmitButton = styled.button`
-  width: 40rem;
+  width: 20.2rem;
   align-items:center;
   padding:.7vw;
   color: #000;
   font-size: 15px;
   font-weight: 600;
   border: none;
+  margin-left:2vw;
   border-radius: 100px 100px 100px 100px;
   cursor: pointer;
-  transition: all, 240ms ease-in-out;
- 
+  transition:0.8s;
+  background:#f5fafa;
   &:hover {
     filter: brightness(1.03);
+    background:#17244d;
+    color:#fff;
   }`;
 export const Form = styled.form`
     Background:#ccc;
@@ -65,14 +69,14 @@ export const Input = styled.input`
     position:relative;
     height:3.5vw
     left:2.5vw;
-    top:-1.3vw;
+    top:-2.2vw;
     width:15.5rem;
    color:#fff;
    font-weight:100;
    letter-spacing:1px;
     outline:none;
-    &:placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: red;
+    &:placeholder{ /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #fff;
     opacity: 1; /* Firefox */
   }
   
@@ -151,7 +155,7 @@ font-size: 1.8rem;
 cursor: pointer;
 `
 export const EmailBox = styled.div`
-height:2.3vw;
+height:2.6rem;
 width:20rem;
 padding:.2rem;
 border: 1px solid #fff; 
@@ -174,13 +178,13 @@ cursor: pointer;
    
 `
 export const UserIcon = styled(FaUserPlus)`
-  color:#ccc;
+  color:#f5fafa;
   @media screen and (max-width: 1300px) {
     display: none;
   }
   position:absolute;
   left:-14rem;
-  top:23.5rem;
+  top:40%;
   font-size: 18rem;
   opacity:0;
   transition:0.7s;
@@ -208,13 +212,13 @@ export const UserIcon = styled(FaUserPlus)`
   }}
 `
 export const UserLoginIcon = styled(FaSignInAlt)`
-  color:#ccc;
+  color:#f5fafa;
   font-size: 18rem;
   position:absolute;
   opacity:0;
   right:-20rem;
   transition:0.7s;
-  
+  top:-13%;
   z-index:5;
   ${props => {
     if (props.toggle==="start") {
@@ -285,7 +289,7 @@ export const UserLoginBox = styled.div`
 `
 
 export const PasswordBox = styled.div`
-height:2.3vw;
+height:2.6rem;
 width:20rem;
 
 padding:.2rem;

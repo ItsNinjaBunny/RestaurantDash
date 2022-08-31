@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import { useState } from "react";
 
@@ -15,16 +15,14 @@ import Client from './pages/client/index'
 import Business from './pages/owner';
 function App() {
 
-  console.warn="";
-  
    return (
     <BrowserRouter>
     <main>
         <Routes>
             <Route path="/business" element={<Business/>} />
             <Route path="/client" element={<Client/>} />
-            <Route path="/login" element={<AccountBox/>} />
-            <Route path="/navbar" element={<Navbar/>} />
+            <Route path={"/login"} element={<AccountBox/>} />
+            <Route path={"/"} element={<AccountBox/>} />
         </Routes>
     </main>
 </BrowserRouter>

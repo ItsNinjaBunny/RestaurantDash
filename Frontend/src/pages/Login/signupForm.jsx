@@ -12,21 +12,21 @@ import {
 import { Marginer } from "../../components/marginer/index";
 import { AccountContext } from "./AccountContext.jsx";
 const SubmitButton = styled.div`
-  width: 34rem;
+  width: 20.5rem;
   text-align:center;
   padding:.7vw;
   color: #000;
   font-size: 15px;
   font-weight: 600;
   background:#fff;
-  border: none;
-  border-radius: 100px 100px 100px 100px;
+ 
+  border-radius: 2vw;
   cursor: pointer;
   transition: all, 240ms ease-in-out;
-  margin-left:1.6vw;
+  margin-left:2.3vw;
   &:hover {
     filter: brightness(1.03);
-    background:#000;
+    background:#17244d;
     color:#fff;
   }`
 
@@ -48,7 +48,7 @@ const password_pattern = /^(?=.*[A-Z]){1,}(?=.*\d){1,}(?=.*[!@#$%^&*()\[\]{};:'"
     }
     e.preventDefault();
     try {
-      window.alert(name,password,key,address);
+      
       if(!email_pattern.test(email)){
         window.alert("bad email");
       
@@ -58,8 +58,8 @@ const password_pattern = /^(?=.*[A-Z]){1,}(?=.*\d){1,}(?=.*[!@#$%^&*()\[\]{};:'"
       
       }else{
       
-        console.log("helloa");
-        let res = await axios("http://localhost:3000/register", {
+       
+        let res = await axios("http://localhost:8080/users/register", {
             method: "POST",
             data: {
                 name:name,
@@ -74,21 +74,21 @@ const password_pattern = /^(?=.*[A-Z]){1,}(?=.*\d){1,}(?=.*[!@#$%^&*()\[\]{};:'"
                 }
             },
         });
-        console.log(res);
+       
         if (res.status === 200) {
             setName("");
             setPassword("");
             setConfirmPassword("");
-            setAddress("");
+            setAddress(""); 
             setKey("");
             setEmail("")
-            window.location.href ="http://localhost:3001/Login";
+            window.location.href ="http://localhost:3000/Login";
         }
       }
 
        
     } catch (err) {
-       window.location.reload();
+       window.alert("Try Again Please")
     }
     
 };
@@ -127,10 +127,10 @@ const password_pattern = /^(?=.*[A-Z]){1,}(?=.*\d){1,}(?=.*[!@#$%^&*()\[\]{};:'"
           <Address/>
           <Input value={address} placeholder='420 Naomi Jane Parkway Highway, CA' onChange={(e) => setAddress(e.target.value)} />
         </EmailBox>
-      </FormContainer>
-      <Marginer direction="vertical" margin={10} />
+        <Marginer direction="vertical" margin={10} />
       <SubmitButton onClick={handleSubmit}>Signup</SubmitButton>
       <Marginer direction="vertical" margin="1em" />
+      </FormContainer>
       <MutedLink onClick={switchToSignin}>
         Already have an account?
         <BoldLink href="#" >

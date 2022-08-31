@@ -31,7 +31,7 @@ class RestType extends React.Component {
    render(){
   return (
     <>
-        <button onClick={()=>this.props.handleBackLanding()}>back to landing</button>
+        <button class="button1" onClick={()=>this.props.handleBackLanding()}>Back</button>
         {this.state.displayData}
     </>
     

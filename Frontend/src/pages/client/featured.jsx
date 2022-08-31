@@ -18,11 +18,7 @@ class Featured extends React.Component {
 
     constructor(props) {
         super(props);
-
-        
         this.array=[];
-       
-        //
         this.state = {
             active: 'start',
             page:this.array
@@ -46,13 +42,13 @@ class Featured extends React.Component {
         this.setState({
             page:<RestType type={obj} handleBackLanding={this.handleBackLanding} createRestuarants={this.createRestuarants}></RestType>
         })
-       
     }
     async makeCategoryCards(){
         
-        let res = await axios("http://localhost:3500/menuitems", {
+        let res = await axios("http://localhost:8080/restaurants/menuItems", {
             method: "get"
         });
+
         console.log(res.data);
         Object.entries(res.data).forEach(entry => {
             const [key, value] = entry;
@@ -70,7 +66,9 @@ class Featured extends React.Component {
             page:this.array
         })
        
-       
+        if(Object.keys(res.data).length===0){
+            this.makeCategoryCards();
+        }
     }
     createRestuarants=(obj,obj2)=>{
         this.setState({

@@ -5,9 +5,9 @@ import OrderItems from '../client/OrderItems';
 class OrderCard extends React.Component {
   constructor(props) {
     super(props);
-    this.getData = this.getData.bind(this);
+
     this.array = [];
-    this.getData();
+
     this.state = {
 
       screen: this.array,
@@ -20,21 +20,23 @@ class OrderCard extends React.Component {
     }
 
 
-
+    this.getData = this.getData.bind(this);
+    this.getData();
   }
 
   checker() {
 
   }
   async getData() {
+    this.array = [];
     var req = window.location.search.split("?id=");
-    console.log(req[1]);
-    let res = await axios("http://192.168.1.6:4500/orders?status=" + this.props.query, {
-      method: "get",
-      params: {id:req[1]},
+  
+    let res = await axios('http://localhost:8080/orders/orders/status/'+this.props.query+'/'+req[1], {
+      method: "GET"
     });
 
-    //console.log(res.data);
+
+    console.log(res);
     for (let j = 0; j < res.data.length; j++) {
 
 
@@ -44,28 +46,26 @@ class OrderCard extends React.Component {
         items: res.data[j].items,
         total: res.data[j].total,
         status: res.data[j].order_status,
+        date: res.data[j].date,
         user_id: res.data[j].user_id
       }
       console.log(orderItem);
       if (res.data[j].order_status === "Completed") {
         this.array.push(<OrderItems type="Business1" item={orderItem} updateOrder={this.props.updateOrder} ></OrderItems>);
-        setTimeout(() => {
-          this.setState({ screen: this.array });
-        }, 4000);
-
-
       } else {
         this.array.push(<OrderItems type="Business" item={orderItem} updateOrder={this.props.updateOrder} ></OrderItems>);
-
-        setTimeout(() => {
-          this.setState({ screen: this.array });
-        }, 4000);
 
       }
 
 
 
     }
+    setTimeout(() => {
+      this.setState({
+        screen: this.array
+
+      })
+    }, 400);
 
 
   }

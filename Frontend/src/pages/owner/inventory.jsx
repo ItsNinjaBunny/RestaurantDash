@@ -48,7 +48,7 @@ class Inventory extends React.Component {
     async getInventory(){
         var req = window.location.search.split("?id=");
         console.log(req[1]);
-        let res = await axios("http://localhost:3500/inventory", {
+        let res = await axios("http://localhost:8080/restaurants/inventory", {
             method: "GET",
             params: {id:req[1]},
         });
@@ -83,7 +83,7 @@ class Inventory extends React.Component {
          
         var req = window.location.search.split("?id=");
         console.log(req[1]);
-        let res = await axios("http://localhost:3500/updateinventory", {
+        let res = await axios("http://localhost:8080/restaurants/updateinventory", {
             method: "PATCH",
             params: {id:req[1]},
             data: {
@@ -96,7 +96,7 @@ class Inventory extends React.Component {
        let ingredients = this.objs;
         var req = window.location.search.split("?id=");
         console.log(req[1]);
-        let res = await axios("http://localhost:3500/updateinventory", {
+        let res = await axios("http://localhost:8080/restaurants/updateinventory", {
             method: "PATCH",
             params: {id:req[1]},
             data: {
@@ -154,7 +154,7 @@ class Inventory extends React.Component {
                         <input type="number" placeholder='1' rows="4" cols="50" value={this.state.postQty} onChange={(e) => this.handleChange(e, 1)} ></input>
 
                         <br></br>
-                        <button className="button" onClick={(e) => this.appendData(e)}>Append</button>
+                        <button className="button1" onClick={(e) => this.appendData(e)}>Append</button>
                     </AddInventoryForm>
                     <UpdateInventoryForm>
                         {this.displayData}

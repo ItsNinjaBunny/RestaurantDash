@@ -6,7 +6,7 @@ import RestItems from './restItems'
 const Restuarant = (props) => {
   const RestuarantBox = styled.div
   `
-  color:#000;
+  color:#fff;
   font-weight:100;
   font-size:2vw;
   height:10vw;
@@ -14,15 +14,17 @@ const Restuarant = (props) => {
   margin:0 auto;
   `
   const Landing = styled.div`
-  background:url(https://s3.amazonaws.com/PandaExpressWebsite/www/pooc-web-tile-desktop-bg-v3.jpg);
+  
     height:50vw;
     width:100%;
   `
   const Content = styled.div`
-    background-color:#656565;
+    background-color:#fff;
     min-height:50vw;
     height:auto;
     padding-right:4vw;
+    border-radius:1vw;
+    border:1px solid #007fff;
     width:90%;
    margin:0 auto;
   `
@@ -37,12 +39,17 @@ const Restuarant = (props) => {
   console.log(props);
   for (let index = 0; index <items.length; index++) {
     const element = items[index];
-    rawItems.push(<RestItems type="restaurant" AddToCart={props.AddToCart} menuItem={element}></RestItems>);
+    element.restaurant_name=props.rest.name;
+    element.restaurant_id=props.rest.id; 
+    console.log(props.rest,element);
+    
+      rawItems.push(<RestItems type="restaurant" AddToCart={props.AddToCart} menuItem={element}></RestItems>);
+    
   }
  
   return (
     <>
-    <Landing><button onClick={()=>props.restTypes(props.goback)}>back</button></Landing>
+    <button class="button1"onClick={()=>props.restTypes(props.goback)}>Back</button>
     <RestuarantBox>{props.rest.name}</RestuarantBox> 
     
     {/* <button onClick={()=>{setActive("coupons")}}>coupons</button> */}

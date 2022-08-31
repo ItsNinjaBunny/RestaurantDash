@@ -13,14 +13,22 @@
     animation: movedown 1s ;
     
 }
+#total{
+    font-size:2.4vw;
+    position: relative; 
+    font-weight:100;
+    background-color:transparent;
+    color: #f5fafa;
 
+}
 #payForm{
-    border:1px solid #000;
+    border:1px solid #f5fafa;
     margin:0 auto;
     padding:3vw;
     padding-bottom:4vw;
     width:50%;
-    background-color:#fff;
+    color:#f5fafa;
+    background-color:#007fff;
    border-radius: 1vw;
     text-align:center;
 }
@@ -28,11 +36,10 @@
     font-size:2.4vw;
     padding:1vw;
     font-weight:100;
-    
     padding-top:2.5vw;
     border-radius: 0.5vw;
-    background-color:#000;
    width:100%;
+   margin-top:10%;
 }
 #payH1, .payH1{
     font-size:2.4vw;
@@ -41,23 +48,26 @@
     font-weight:100;
  
     background-color:transparent;
-    color: #000;
+    color: #f5fafa;
 }
 #pay input{
-    background-color:#ccc;
-    color:#000;
-    border:none;
+    color:#f5fafa;
+    background:transparent;
+    border:1px solid #f5fafa;
+    font-weight:100;
+    letter-spacing:1px;
+    outline:none;
     height:2.5vw!important;
     width:16vw;
-    position:relative;
-    left:2vw;
+    margin-left:12vw;
+    padding:1vw;
     font-size: 1vw;
     margin-bottom: 1vw;
-    margin-right:3.5vw;
+   
 }
 @keyframes move {
     0%{
-        color:#ccc;
+        color:#f5fafa;
         left:0;
     }
     30%{
@@ -74,7 +84,7 @@
 }
 @keyframes movedown {
     0%{
-        color:#ccc;
+        color:#f5fafa;;
         right:0;
     }
     30%{
@@ -90,14 +100,14 @@
     }
 }
 #completed{
-    background-color:#fff;
+    background-color:#f5fafa;;
     opacity:0.8;
 }
 .completed{
     background-color:#000!important;
-    color:#fff!important;
+    color:#f5fafa!important;
 }
 .work{
     background-color:#fff!important;
-    color:#000!important;
+    color:#f5fafa!important;
 }

@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import RestItems from '../client/restItems'
 import axios from 'axios';
 const Main = styled.div`
-  background-color:#656565;
-  height:40%;
+  color:#f5fafa;
+  height:auto;
   width:100%;
+  margin-top:7%;
+  padding-bottom:2vw;
+  border-radius:1vw;
 `
 class DishView extends React.Component {
   //fetch for all dishes from restuarant 
@@ -28,7 +31,7 @@ class DishView extends React.Component {
 async getDishes(){
     var req = window.location.search.split("?id=");
     console.log(req[1]);
-    let res = await axios("http://localhost:3500/restaurants/dishes", {
+    let res = await axios("http://localhost:8080/restaurants/restaurants/dishes", {
         method: "GET",
         params: {id:req[1]},
     });

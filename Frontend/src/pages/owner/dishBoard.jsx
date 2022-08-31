@@ -118,12 +118,6 @@ class DishBoard extends Component {
         else if (x===0){
             await this.setState({ quantity: getTextAreaValue });
         }
-
-        //  let obj = {
-        //     name:this.state.name ,
-        //     quantity:this.state.quantity 
-        // }
-        //console.log(this.state.name,this.state.quantity);
         this.props.handleStateChange(this.state.name, this.state.quantity,this.state.cuisine);
     }
 

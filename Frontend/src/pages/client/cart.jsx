@@ -36,60 +36,86 @@ const Cart = (props) => {
     }
     run(props.cart.items, displayItems);
     async function completeOrder(e) {
+        console.log(props.cart)
 
-        var req = window.location.search.split("?id=");
-        console.log(req[1]);
-        // let res = await axios("http://192.168.1.6:4500/makeorder", {
-        //     method: "POST",
-        //     params: { id: req[1] },
-        //     data: props.cart
-        // });
-            window.alert("Order Completed")
-            props.switchClient(e,"orders")
-    }
-    //remove item by index when they decide to
-    const Main = styled.div`
+        // var req = window.location.search.split("?id=");
+        // console.log(req[1]);
+        let res = await axios("http://localhost:8080/orders/orders", {
+            method: "POST",
+            data: props.cart
+        });
+       
+        
+            props.switchClient(e, "orders")
+            props.clearCart();
+       
+        
+   
+
+}
+//remove item by index when they decide to
+const Main = styled.div`
+       margin:2vw;
         height:auto;
- 
         position:relative;
         top:-19.5vw;
         padding:3vw;
+        border-radius:1vw;
+        ${props => {
+            if(props.toggle==="cart"){
+                return`
+                background:#007fff; 
+                `
+            }else{
+                return`
+                
+                `
+            }
+        }}
        `
-    let today = new Date().toISOString().slice(0, 10)
+let today = new Date().toISOString().slice(0, 10)
 
 
-    const [view, setView] = useState("cart");
-    return (
+const [view, setView] = useState("cart");
+return (
 
-        <Main>
-            {view === "cart" && <>
-                <div id="total">Total: {props.cart.total}</div>
-                <div id="content">{displayItems}</div>
-            //this place order prompt for payment screen
-                <button onClick={() => setView("Pay")}>Place Order</button>
-            </>}
-            {view === "Pay" && <>
-                <div id="payForm">
-                    <h1 id="payH1">Payment</h1>
-                    <form id="pay">
-                        <input id="payName" placeholder="Card owner Name"></input>
-                        <input placeholder="Card Number"></input>
-                        <input min={today} type="date"></input>
-                        <input placeholder="CVV"></input>
+    <Main toggle={view}>
+        {view === "cart" && <>
+            <div id="total">Total: {props.cart.total}</div>
+            <div id="content">{displayItems}</div>
 
-                    </form>
-                    <br></br>
-                    <br></br>
-                    <button onClick={(e) => completeOrder(e)}>Submit Payment</button>
+            <button class="button2" onClick={() => {
+                console.log(props.cart);
+                if (props.cart.items.length !== 0) {
+                    setView("Pay")
+                }else{
+                    window.alert("no items")
+                }}}>Place Order</button>
+        </>}
+        {view === "Pay" && <>
 
-                </div>
-            </>}
+            <div id="payForm">
+                <h1 id="payH1">Payment</h1>
+                <form id="pay">
+                    <input  placeholder="Card owner Name"></input>
+                    <input placeholder="Card Number"></input>
+                    <input min={today} type="date"></input>
+                    <input placeholder="CVV"></input>
+
+                </form>
+                <br></br>
+                <br></br>
+                <button class="button2" onClick={(e) => completeOrder(e)}>Submit Payment</button>
+                <button class="button1" onClick={() => setView("cart")}>Back</button>
+
+            </div>
+        </>}
 
 
 
-        </Main>
+    </Main>
 
-    )
+)
 }
 
 export default Cart

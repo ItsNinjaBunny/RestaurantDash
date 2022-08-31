@@ -8,8 +8,8 @@ import{Nav,NavBtnLink,NavBtn,NavMenu,NavLink,Bars,H1}from './NavbarElements'
 
 import StartNav from './StartNav';
 const Navbar = () => {
-    const [active, setActive] = useState("");
-    var req =  window.location.href;
+    const [active, setActive] = useState("start");
+    var req =  window.location.href.toLowerCase();
    if(req.includes("/login")){
     setTimeout(() => {
         setActive("start");

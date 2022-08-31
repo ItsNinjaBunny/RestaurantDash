@@ -1,10 +1,11 @@
 input{
- float: left;
- margin-left:19%;
- border-radius: .2vw;
-outline: none;
-font-size:0.8vw;
-font-weight:100;
+  float:left;
+ 
+  margin-top: .5vw;
+  margin-left:20%;
+  outline: none;
+  height:1.5vw;
+  border-radius: .3vw;
 
 
   }
@@ -16,11 +17,14 @@ font-weight:100;
     width:50%;
     background-color: #000;
     height:5vw; padding: 1vw;
+    border-radius: 1vw;
     margin:1vw;
   } #finalLabel input
   {
     float: right;
     margin-top:5%;
+    border-radius: .1vw;
+    padding:.2vw
   }
   #label{
     float:left;
@@ -48,18 +52,70 @@ text-align: left;
     background: #ffffff;
     margin: 30px auto;
   }
+  #editqty{
+    width:30%;
+    padding:1vw;
+    margin:0 auto;
+    
+  }
+  #li-cart{
+    list-style-type: none;
+    margin-top:2.5%;
+    
+    float: left;
+  }
+  #cart-input{
+   float: left;
+  }
   
   
   .button {
-    background-color: #656565;
-    border-color: #000;
+    background-color: #f5fafa;
+    color: #007fff;
+    border-color: #f5fafa;
    border-radius: .3vw;
   padding:0.1vw;
    float:right;
    margin-top: 1.5vw;
-   width:4vw;
+   font-size:1.1vw;
+   min-width:5vw;
+   width: auto;
+   cursor:pointer;
+   height:2.2vw;
     font-size:0.6.5vw;
     color: #ffffff;
+   
+  }
+  .button1 {
+    background-color: #f5fafa;
+    border:1px solid #f5fafa;
+   border-radius: .3vw;
+  padding:0.1vw;
+   float:right;
+   margin-top: 1.5vw;
+   font-size:1.1vw;
+   min-width:5vw;
+   width: auto;
+   cursor:pointer;
+   height:2.2vw;
+    font-size:0.6.5vw;
+    color: #007fff;
+   
+  }
+  .button2 {
+    background-color: #f5fafa;
+    border:1px solid #f5fafa;
+   border-radius: .3vw;
+  padding:0.1vw;
+  margin-left: 5vw;
+   margin-top: 1.5vw;
+   cursor:pointer;
+   font-size:1.1vw;
+   min-width:5vw;
+   width: auto;
+   height:2.2vw;
+    font-size:0.6.5vw;
+    color: #007fff;
    
   }
   

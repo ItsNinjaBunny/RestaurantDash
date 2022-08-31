@@ -39,6 +39,24 @@ body{
 #navmini{
     position:relative
 }
+.createDish{
+    background-color: #007fff!important;
+    color:#fff!important;
+   
+}
+.createDish:hover{
+    background-color: #fff!important;
+    color:#000!important;
+}
+.viewDish{
+    background-color: #007fff!important;
+    color:#fff!important;
+    
+}
+.viewDish:hover{
+    background-color: #fff!important;
+    color:#000!important;
+}
 .flexbox .board{
     display:flex;
     flex-direction: column;
@@ -48,28 +66,32 @@ body{
     height:auto;
     min-height:30vw;
     border-radius:1vw;
-    background-color:#656565;
+    position:relative;
+    margin-top:10%;
+    background-color:#000;
+    color:#f5fafa;
     padding:2vw;
     box-shadow: .1vw .1vw .1vw #000;;
 }
 .flexbox .board .card{
-   
     padding:1vw 1vw ;
     cursor:pointer;
-    background-color:#ccc;
+    background-color:#17244d;
     border-radius: 1vw;
     margin-top:2vw;
     box-shadow: .1vw .1vw .1vw #000;;
 }
 
 .showUser{
-    padding-top: 15vw !important;;
+   
   
     margin:0 auto;
     width:100%!important;
     top:0vw!important;
-   
+    padding-top:10vw!important;
+    min-height:100vw!important;
     right:0vw!important;
+   
     
    
 }

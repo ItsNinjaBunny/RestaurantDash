@@ -3,18 +3,19 @@ import { NavLink as Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Nav = styled.nav`
-Background:#ccc;
-  min-height: 80px;
-  
+ background:#F5FAFA;
+ height:4vw;
+  color:#007fff;
   width:100%;
   display: flex;
   text-align:center;
-  border-bottom:.1vw solid #fff;
-  border-bottom-right-radius: 10vw;
-    border-bottom-left-radius: 10vw;
+  transition:0.7s;
+
+
   overflow:hidden;
   z-index: 10;
   position:fixed;
+  opacity:0.99;
   top:0;
   z-index:5;
   /* Third Nav */
@@ -22,7 +23,6 @@ Background:#ccc;
   ${props => {
     if (props.toggle==='business') {
       return `
-         color:#fff!important;
           text-align:right;
           z-index:5;
       `;
@@ -30,11 +30,11 @@ Background:#ccc;
     }
     if (props.toggle==='client') {
       return `
-          background-color:#ccc;
+      background:#F5FAFA;
           border-radius:0;
           text-align:right;
           z-index:5;
-          border-bottom:.1vw solid #000;
+         
       `;
     
     }
@@ -109,8 +109,8 @@ export const NavBtnLink = styled(Link)`
   }
 `;
 export const H1 = styled.h1`
-  margin:vw auto;
-  color:#fff;
+  margin:0vw auto;
+
 
   font-weight:200;
   font-size:2.7vw;

@@ -10,7 +10,8 @@ import {UserIcon,UserLoginBox,UserLoginIcon} from "./LoginElements"
 
 
 const BoxContainer = styled(motion.div)`
-  background:#0000004f;
+  background:#007fff;
+  
   ${props => {
     if (props.toggle==='start') {
       return `
@@ -22,7 +23,7 @@ const BoxContainer = styled(motion.div)`
       flex-direction: column;
       border-radius: 19px;
       border:1px solid  #fff;;
-      box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
+      box-shadow: 0 8px 6px -6px #000;
       position: absolute;
       left:14rem;
       overflow: hidden;
@@ -44,7 +45,7 @@ const BoxContainer = styled(motion.div)`
       flex-direction: column;
       border-radius: 19px;
       border:1px solid  #fff;;
-      box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
+      box-shadow: 0 8px 6px -6px #000; 
       position: absolute;
       left:14rem;
       overflow: hidden;
@@ -62,7 +63,7 @@ const BoxContainer = styled(motion.div)`
         display: flex;
         border-radius: 19px;
         border:1px solid #fff;
-        box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
+        box-shadow: 0 8px 6px -6px #000;
         position: absolute;
         left:65vw;    
         overflow: hidden;
@@ -77,7 +78,7 @@ const BoxContainer = styled(motion.div)`
 
 
 const Landing = styled.div`
-    background-color:#656565;
+    background-color:#17244d;
     //background:url(https://wallpaperaccess.com/full/3112895.jpg);
     opacity;.8;
     height:100%;

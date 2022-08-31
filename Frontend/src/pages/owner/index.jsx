@@ -2,20 +2,22 @@ import React,{useState,useEffect} from 'react'
 import styled from 'styled-components'
 import Navbar from '../../components/Navbar'
 import { H1 } from '../Login/LoginElements'
+import Coupons from './coupons'
 import Dishes from './dishes'
 import Inventory from './inventory'
 import Orders from './orders'
 import Welcome from './welcome'
 import '../../App.css'
 import DishScreen from './DishScreen'
-const MenuBox = styled.div`
+const  MenuBox = styled.div`
 position: fixed;
 width: 15vw;
 height: 65.4%;
 
+
 top: 10vw;
-border-radius: 4%;
-border: 0.1vw solid #fff;
+border-radius: 1vw;
+border: 0.1vw solid #007fff;
 color: #fff;
 background-color: transparent;
 text-align: center;
@@ -26,7 +28,7 @@ ${props => {
   if (props.toggle==='dishes'||props.toggle==='coupons'||props.toggle==='inventory'||props.toggle==='orders') {
     return `
         background-color:#000;
-        color:#fff;
+        color:#007fff;
        \
     `;
   
@@ -38,14 +40,14 @@ ${props => {
 
 `
 const ContentBox = styled.div`
-  background-color:#fff;
+  background-color:#f5fafa;
   width:53vw;
   padding:5vw;
   height:auto;
-  min-height:46%;
+  min-height:66%;
   position:absolute;
  
-  overflow:hidden;
+  overflow:hidden; 
   z-index:5;
   top:10vw;
   right:7vw;
@@ -56,7 +58,7 @@ const ContentBox = styled.div`
   border:.1vw solid #000;
  `
 const Landing = styled.div`
-    background-color:#656565;
+    background-color:#17244d;
     //background:url(https://wallpaperaccess.com/full/3112895.jpg);
     opacity;.8;
     height:100%;
@@ -87,6 +89,12 @@ const Li = styled.li`
 
 
 const Business = () => {
+  var req = window.location.search.split("?id=");
+  //console.log(req[1]);
+  if(req[1]===undefined){
+    window.alert("Not Authorized Sign In")
+    window.location.href="http://localhost:3000/login";
+  }
   const [active, setActive] = useState("welcome");
   //window alert
   function switchBusiness(x){
@@ -110,7 +118,7 @@ const Business = () => {
     };
   }, [ChangeBox(scrollPosition)]);
   function ChangeBox(){
-    if(scrollPosition>100){
+    if(scrollPosition>30){
       var interval = setInterval(()=>{ 
         document.getElementById("contentScroll").classList.add("showUser");
            clearInterval(interval);

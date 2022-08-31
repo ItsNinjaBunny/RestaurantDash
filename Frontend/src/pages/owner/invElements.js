@@ -1,7 +1,7 @@
 
 import styled from 'styled-components'
 export const  H1 = styled.h1`
-box-shadow:1px 1px 1px 1px #ccc;
+
 font-weight:150;
 font-size:5vw;
 position:relative; 
@@ -13,7 +13,8 @@ border-radius:1vw;
 width:21vw;
 padding-left:1vw;
 padding-bottom:0.5vw;
-background-color:#fff;
+background-color:#f5fafa;
+color:#007fff;
 
 
 `
@@ -33,21 +34,22 @@ text-align:center;
 width:20vw;
 height:5vw;
 z-index:1;
-top:4.5vw;
+top:7.8vw;
 position:relative;
-left:-7.8vw;
+left:-7.79vw;
 padding:.5vw;
+color:#007fff;
 
 `
 export const RoundBox = styled.div`
-border-right:1px solid;
+
 height:100%;
 position:absolute;
 width:4.5vw;
-left:0vw;
+
 top:0vw;
-border-top-left-radius: 1vw;
-border-bottom-left-radius: 1vw;
+border-top-left-radius: .8vw;
+border-bottom-left-radius: .8vw;
 overflow:hidden;
 transition:1s;
 transition-timing-function: ease-in-out;
@@ -60,13 +62,14 @@ ${props => {
       return(`
       
       opacity:1;
-      background-color:#fff;
+      background-color:#000;
+      color:#007fff;
         
       `)
      }else
     if (props.toggle.changed===false) {
      return(`
-     background-color:#000;
+     background-color:#007fff;
 
      opacity:.9;
      `)
@@ -76,15 +79,17 @@ ${props => {
 
 `
 export const AddInventoryForm = styled.form`
-
+background-color:#17244d;
 height:auto;
 min-height:7vw;
 width:80%;
 transition:1s;
 border:1px solid;
 margin:0 auto;
-margin-left:6vw;
+margin-left:15%;
+
 top:0vw;
+
 padding-top:2vw;
 padding:1vw;
 border-radius:1.5vw;
@@ -97,7 +102,8 @@ height:auto;
 margin:2vw auto;
 border-bottom:1px solid;
 text-align:center;
-margin-left:10vw;
+margin-left:25%;
+
 padding:1vwl
 
 `  
@@ -106,11 +112,11 @@ const Input = styled.input`
 margin-left:1.4vw;
 `
 export const Content = styled.div`
-
+background-color:#ccc;
 position:relative;
-border:1px solid;
+
 border-radius:1vw;
-min-height:18vw;
+min-height:20vw;
 height:auto;
 top:-4vw;
 overflow:hidden;
@@ -118,7 +124,7 @@ left:-1.4rem;
 padding-top:2vw;
 padding-bottom:8vw;
 width:105%;
-
+transition:0.7s;
 
 
 `
@@ -129,10 +135,10 @@ width:80%;
 transition:1s;
 border:1px solid;
 margin:2vw auto;
-margin-left:6vw;
+margin-left:15%;
 top:0vw;
 padding:2vw;
 border-radius:1.5vw;
-background-color:#656565;
+background-color:#17244d;
 text-align:center;
 `
