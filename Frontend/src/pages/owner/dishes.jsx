@@ -45,7 +45,7 @@ class Dishes extends React.Component {
   async getInventory(){
     var req = window.location.search.split("?id=");
     console.log(req[1]);
-    let res = await axios("http://192.168.1.6:3500/inventory", {
+    let res = await axios("http://localhost:3500/inventory", {
         method: "GET",
         params: {id:req[1]},
     });
@@ -173,7 +173,7 @@ class Dishes extends React.Component {
     var req =  window.location.search.split("?id=");
     console.log(req[1]);
    
-    let res = await axios("http://192.168.1.6:3500/addrecipe" , { 
+    await axios("http://localhost:3500/addrecipe" , { 
       method: "POST",
       params: {
         id: req[1]
@@ -193,7 +193,7 @@ class Dishes extends React.Component {
     var req =  window.location.search.split("?id=");
     console.log(req[1]);
    
-    let res = await axios("http://192.168.1.6:3500/update/dish" , { 
+    await axios("http://localhost:3500/update/dish" , { 
       method: "PATCH",
       params: {
         id: req[1]

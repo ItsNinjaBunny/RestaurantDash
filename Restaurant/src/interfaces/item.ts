@@ -5,5 +5,7 @@ export default interface Item_Menu {
     cuisine: string;
     ingredients : ingredient[],
     price: number;
+    quantity?: number;
+    available?: boolean;
     image_links: string[]
 }

@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 export const verify = async(req: Request, res: Response, next: NextFunction) => {
     const token = String(req.query.id);
     if(token !== undefined) {
-        const response = await request('http://localhost:3000/token', 'get', {
+        const response = await request('http://gateway:8080/users/token', 'get', {
             data : { token : token, secret : server.secret } 
         });
         if(response !== undefined)

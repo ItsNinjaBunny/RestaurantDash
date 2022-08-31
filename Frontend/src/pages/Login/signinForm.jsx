@@ -24,7 +24,7 @@ import { BoldLink,
         try {
             console.log(username, password)
             console.log("helloa");
-            let res = await axios("http://192.168.1.6:3000/login", {
+            let res = await axios("http://localhost:3000/login", {
                 method: "POST",
                 data: {
                     username: username,
@@ -38,9 +38,9 @@ import { BoldLink,
                 setPassword("");
                 //if client and if buisness 
                 if(res.data.auth.license.type==='client'){
-                    window.location.href = 'http://localhost:5000/client?type='+res.data.auth.license.type+'?id='+res.data.auth.id;
+                    window.location.href = 'http://localhost:3001/client?type='+res.data.auth.license.type+'?id='+res.data.auth.id;
                 }else if(res.data.auth.license.type==='business'){
-                    window.location.href = 'http://localhost:5000/business?type='+res.data.auth.license.type+'?id='+res.data.auth.id;
+                    window.location.href = 'http://localhost:3001/business?type='+res.data.auth.license.type+'?id='+res.data.auth.id;
                 }
               
             }

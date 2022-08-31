@@ -11,7 +11,7 @@ const BusinessNav = () => {
   </div>
   <h1 style={{position: 'absolute',left:80+'%',top:25+'%'}} >UserName</h1>
   <FaUserLock style={{position: 'absolute',left:90+'%',top:20+'%', fontSize:3+'rem'}}></FaUserLock>
-  <BoldLink href="http://localhost:5000/client?type=businessclient">Client View</BoldLink>
+  <BoldLink href="http://localhost:3001/client?type=businessclient">Client View</BoldLink>
   </>
    
 

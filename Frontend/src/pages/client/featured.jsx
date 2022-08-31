@@ -50,7 +50,7 @@ class Featured extends React.Component {
     }
     async makeCategoryCards(){
         
-        let res = await axios("http://192.168.1.6:3500/menuitems", {
+        let res = await axios("http://localhost:3500/menuitems", {
             method: "get"
         });
         console.log(res.data);

@@ -23,7 +23,7 @@ const ClientNav = () => {
     
     <h1 style={{position: 'absolute',left:80+'%',top:25+'%'}} >UserName</h1>
     {active==="business" &&  <FaUserLock style={{position: 'absolute',left:90+'%',top:20+'%', fontSize:3+'rem'}}></FaUserLock>}
-    {active==="business"&& <BoldLink href="http://localhost:5000/business?type=business">Business View</BoldLink>}
+    {active==="business"&& <BoldLink href="http://localhost:3001/business?type=business">Business View</BoldLink>}
     {active ==="client" && <User style={{position: 'absolute',left:90+'%',top:23+'%', fontSize:2.8+'rem'}}></User> }
    
     </>

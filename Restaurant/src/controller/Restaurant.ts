@@ -4,9 +4,14 @@ import { server } from '../config/config';
 import { request } from '../helpers/request';
 import { Restaurant, init } from '../interfaces/Restaurant';
 import database, { keys } from '../database/Restaurant_Database';
-import Ingredient from '../interfaces/Ingredient';
 import Recipe from '../interfaces/Item';
-import Item_Menu from '../interfaces/Item';
+import Ingredient from '../interfaces/Ingredient';
+import { register } from '../helpers/eureka';
+import axios from 'axios';
+
+setTimeout(() => {
+    register('restaurants', 3500);
+}, 15000);
 
 const getKeys = async(req: Request, res: Response): Promise<Response> => {
     if(String(req.body.secret) === server.secret )
@@ -18,7 +23,7 @@ const registerRestaurant = async(req: Request, res: Response) => {
     const temp = req.body as Restaurant;
     const restaurant = init(temp);
     database.initRestaurant(restaurant);
-    request('http://localhost:4000/initTable', 'post', {
+    request('http://gateway:8080/inventory/initTable', 'post', {
         data: {
             id: new ObjectId(restaurant.owner)
         }
@@ -28,7 +33,7 @@ const registerRestaurant = async(req: Request, res: Response) => {
 }
 
 const getInventory = async(req: Request, res: Response): Promise<Response> => {
-    const response = await request('http://localhost:4000/ingredients', 'get', {
+    const response = await request('http://gateway:8080/inventory/ingredients', 'get', {
         data : {
             id : req.id
         }
@@ -50,7 +55,7 @@ const updateInventory = async(req: Request, res: Response): Promise<Response | v
         inventory = [[data.ingredients[0].name, data.ingredients[0].stock]];
     else 
         data.ingredients.forEach(item => inventory.push([item.name, item.stock]));
-    const response = await request('http://localhost:4000/update', 'patch', {
+    const response = await request('http://gateway:8080/inventory/update', 'patch', {
         data: {
             db: req.id,
             inventory: inventory,
@@ -63,7 +68,6 @@ const updateInventory = async(req: Request, res: Response): Promise<Response | v
 }
 
 const addRecipe = async(req: Request, res: Response) => {
-    console.log(req.body);
     const temp = req.body;
     const recipe = temp.recipe as Recipe;
     const id = String(req.id);
@@ -87,7 +91,7 @@ const addRecipe = async(req: Request, res: Response) => {
             }
                 
         });
-        request(`http://localhost:4000/update?id=${String(req.query.id)}`, 'patch', {
+        request(`http://gateway:8080/inventory/update?id=${String(req.query.id)}`, 'patch', {
             data: {
                 db: id,
                 inventory: ingredients,
@@ -100,30 +104,35 @@ const addRecipe = async(req: Request, res: Response) => {
     res.sendStatus(200);
 }
 
-const getCuisine = async(req: Request, res: Response) => {
-    const type = String(req.query.type);
-    if(type === undefined)
-        res.status(500).json({
-            error: 'no cuisine was inserted'
-        });
-    const results = await database.findCuisine(type) as Restaurant[];
-    results.forEach(restaurant => {
-        restaurant.menu_items.forEach((item: Recipe) => {
-            if(item.cuisine.toLowerCase() !== type.toLowerCase()) {
-                const index = restaurant.menu_items.findIndex((temp: Recipe) => {
-                    return temp === item;
-                });
-                if(index === 0) 
-                    restaurant.menu_items.shift();
-                else 
-                    restaurant.menu_items = restaurant.menu_items.splice(0, index);
-            }
+const makeOrder = async(req: Request, res: Response) => {
+    const { items, restaurant_id } = req.body.data;
+    const restaurant = await database.getRestaurantById(restaurant_id);
+    const orders: [Recipe, number | undefined][] = []
+    restaurant.menu_items.forEach(item => {
+        items.forEach((order: Recipe) => {
+            if(item.dish_name === order.dish_name)
+                orders.push([item, order.quantity]);
         });
     });
-
-    res.status(200).json({
-        restaurants: results
+    const ingredients: { name: string; stock: number }[] = [];
+    orders.forEach(order => {
+        order[0].ingredients.forEach(ingredient => {
+            //@ts-ignore
+            ingredients.push({ name: ingredient.name, stock: order[1] *  ingredient.stock})
+        });
     });
+    const response = await axios.patch(`http://gateway:8080/inventory/restaurant/order`, {
+        data: {
+            ingredients: ingredients
+        },
+        params: {
+            id : restaurant.owner
+        }
+    });
+    if(response)
+        return res.status(200).json(response.data);
+    return res.status(200).json('invalid inventory');
+    
 }
 
 const getRestaurantByItem = async(req: Request, res: Response) => {
@@ -148,77 +157,73 @@ const updateDish = async(req: Request, res: Response) => {
 }
 
 const getCuisineArrays = async(req: Request, res: Response) => {
-    let restaurants = await database.getMenuItems() as Restaurant[];
-    const menu_items: any = {};
-    restaurants.forEach(restaurant => {
-        if(restaurant.menu_items.length === 0) {
-            const index = restaurants.findIndex(item => restaurant === item);
-            restaurants = restaurants.splice(index, 1);
-            return;
+    type restaurant = {
+        restaurant: Restaurant;
+        inventory: Ingredient[];
+    }
+    const establishments: restaurant[] = [];
+    const temp = await database.getMenuItems() as Restaurant[];
+    const owners = temp.map(restaurant => { return restaurant.owner });
+    const response = await request('http://gateway:8080/inventory/all/inventories', 'get', {
+        data: {
+            owners : owners
         }
-        restaurant.menu_items.forEach(item => {
-            if(item.cuisine in menu_items) 
-                menu_items[item.cuisine].push(restaurant);
-            else {
-                menu_items[item.cuisine] = [];
-                menu_items[item.cuisine].push(restaurant)
-            }
-        });
     });
+    if(response) {
+        for(let i = 0; i < temp.length; i++) {
+            establishments.push({ restaurant: temp[i], inventory: response.data[i] });
+        }
 
-    // restaurants.forEach(restaurant => {
-    //     if(restaurant.menu_items.length === 0) {
-    //         const index = restaurants.findIndex(item => restaurant === item);
-    //         restaurants = restaurants.splice(index, 1);
-    //         return;
-    //     }
-    //     restaurant.menu_items.forEach(item => {
-    //         if(item.cuisine in menu_items) {
-    //             restaurant.menu_items.forEach(menu => {
-    //                 if(item.cuisine !== menu.cuisine) {
-    //                     const index = restaurant.menu_items.findIndex(item => item === menu);
-    //                     console.log('removed index:', index);
-    //                     restaurant.menu_items = restaurant.menu_items.splice(index, 1);
-    //                 }  
-    //             });
-    //             menu_items[item.cuisine].push(restaurant);
-    //         }
-    //         else {
-    //             menu_items[item.cuisine] = [];
-    //             restaurant.menu_items.forEach(menu => {
-    //                 if(item.cuisine !== menu.cuisine) {
-    //                     const index = restaurant.menu_items.findIndex(item => item === menu);
-    //                     console.log('index removed:', index);
-    //                     restaurant.menu_items = restaurant.menu_items.splice(index, 1);
-    //                 }  
-    //             });
-    //             menu_items[item.cuisine].push(restaurant)
-    //         }
-    //     });
-    // });
-    return res.json(menu_items);
-}
+        const allItems: any = {};
+        type restaurantMenu = { id: ObjectId; name: string; menu_items: Recipe[] };
 
-export const test = async(req: Request, res: Response) => {
-    let restaurants = await database.getMenuItems() as Restaurant[];
-    const allItems: any = {};
-    type restaurantMenu = { name: string, menu_items: Recipe[]};
-    
-    restaurants.forEach(restaurant => {
-        restaurant.menu_items.forEach(menuItem => {
-            if(menuItem.cuisine in allItems) {
-                if(allItems[menuItem.cuisine].length >= 1) {
-                    allItems[menuItem.cuisine].forEach((rest: restaurantMenu) => {
-                        if(rest.name === restaurant.name)
-                            rest.menu_items.push(menuItem);
-                    });
+        for(let i = 0; i < establishments.length; i++) {
+            const restaurant = establishments[i].restaurant;
+            const inventory = establishments[i].inventory;
+            restaurant.menu_items.forEach(item => {
+                item.ingredients.forEach(itemIngredient => {
+                    for(let j = 0; j < inventory.length; j++) {
+                        //@ts-ignore
+                        if(inventory[j].stock - itemIngredient.stock < 0) {
+                            item.available = false;
+                            break;
+                        }
+                        item.available = true;
+                    }
+                });
+            });
+            restaurant.menu_items.forEach(menuItem => {
+                if(menuItem.cuisine in allItems) {
+                    if(allItems[menuItem.cuisine].length >= 1) {
+                        allItems[menuItem.cuisine].forEach((rest: restaurantMenu) => {
+                            if(rest.name === restaurant.name) 
+                                rest.menu_items.push(menuItem);
+                            else 
+                                allItems[menuItem.cuisine].push([{ id: restaurant._id, name: restaurant.name, menuItem: [menuItem]}]);
+                            
+                        });
+                    }
+                } else {
+                    allItems[menuItem.cuisine] = [{ id: restaurant._id, name: restaurant.name, menu_items: [menuItem] }];
                 }
-            } else {
-                allItems[menuItem.cuisine] = [{ name: restaurant.name, menu_items: [menuItem] }];
-            }
-        });
-    });
-    return res.json(allItems);
+            });
+        }
+
+        return res.json(allItems);
+    }
+    return res.status(200).json([]);
 }
 
-export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe, getCuisine, getRestaurantByItem, updateDish, getDishes, getBusinessDishes, getCuisineArrays }
+const getRestaurantById = async(req: Request, res: Response) => {
+    return res.status(200).json({ id: await database.returnId(req.body.id)});
+}
+
+const searchQuery = async(req: Request, res: Response) => {
+    const keyword = String(req.body.keyword);
+    const type = String(req.body.type);
+    return res.status(200).json(await database.query(type, keyword));
+}
+
+export default { getKeys, registerRestaurant, getInventory, updateInventory, addRecipe,
+    getRestaurantByItem, updateDish, getDishes, getBusinessDishes, getCuisineArrays, getRestaurantById,
+    makeOrder, searchQuery, }

@@ -1,14 +1,18 @@
 import { Request, Response } from 'express';
 import { user, init } from '../interfaces/User';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { server } from '../config/config';
 import jwt from 'jsonwebtoken';
 import database, { getEmail, getTokens } from '../database/User_Database';
 import Credentials from '../interfaces/Credentials';
 import license from '../interfaces/License';
-import coupon from '../interfaces/Coupon';
-import Item from '../interfaces/Item';
 import { request } from '../helpers/request';
+import { register } from '../helpers/eureka';
+
+setTimeout(() => {
+    register('users', server.port);
+}, 15000);
+
 
 const login = async(req: Request, res: Response): Promise<Response> => {
     let temp = req.body as Credentials;
@@ -59,13 +63,13 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
         account.license.type = 'client';
     }
     if(key !== '') {
-        const response = await request('http://localhost:3500/keys', 'get', {
+        const response = await request('http://gateway:8080/restaurants/keys', 'get', {
             data : { 
                 key : key,
                 restaurant: String(req.body.license.restaurant),
                 secret : server.secret }
         });
-        if(response !== undefined) {
+        if(response) {
             const results = response.data as license[];
             if(results.length === 0)
                 return res.status(500).json({
@@ -76,7 +80,7 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
                     account.license.key = results[i].key;
                     account.license.restaurant = results[i].restaurant;
                     account.license.type = 'business';
-                    request('http://localhost:3500/register', 'post', {
+                    request('http://gateway:8080/restaurants/register', 'post', {
                         data: {
                             owner: account._id,
                             name: results[i].restaurant,
@@ -97,7 +101,6 @@ const register_account = async(req: Request, res: Response): Promise<Response> =
     account.password = bcrypt.hashSync(account.password, 10);
     database.register(account);
     return res.status(200).json({
-        url : 'http://192.168.1.2:5000/Login',
         account
     });
 }
@@ -112,10 +115,10 @@ const getToken = async(req: Request, res: Response): Promise<Response> => {
 
 const getUser = async(req: Request, res: Response): Promise<Response> => {
     const user = await database.getUser(String(req.id));
-    if(user === null)
-        return res.status(200).json('no user was found');
-    return res.status(200).json(user);
+    if(user) 
+        return res.status(200).json(user);
+    return res.status(200).json('no user was found');
 }
 
 
-export default { login, register_account, getAllUsers, getToken, getUser, }
+export default { login, register_account, getAllUsers, getToken, getUser}

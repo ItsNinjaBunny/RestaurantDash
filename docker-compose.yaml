@@ -5,6 +5,28 @@ networks:
     external: false
 
 services:
+  gateway:
+    image: braydenwongcode/restaurant-gateway
+    # build:
+    #   context: ./gateway/
+    #   dockerfile: dockerfile
+    networks:
+      - dash
+    ports:
+      - 8080:8080
+    restart: always
+
+  eureka:
+    image: braydenwongcode/restaurant-eureka:latest
+    # build:
+    #   context: ./eureka/
+    #   dockerfile: dockerfile
+    networks:
+      - dash
+    ports:
+      - 8761
+    restart: always
+
   inventory_management:
     image: mysql:5.7
     platform: linux/x86_64
@@ -19,7 +41,7 @@ services:
     networks:
       - dash
     ports:
-      - 3306:3306
+      - 3306
     command: mysqld
 
   user_management:
@@ -32,7 +54,7 @@ services:
     volumes:
       - users:/data/db
     ports:
-      - 27017:27017
+      - 27017
     restart: always
 
   restaurant_management:
@@ -45,17 +67,82 @@ services:
     volumes:
       - restaurants:/data/db
     ports:
-      - 27018:27017
+      - 27017
     restart: always
 
   order_management:
     image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
     networks:
       - dash
     volumes:
       - orders:/data/db
     ports:
-      - 27019:27017
+      - 27017
+    restart: always
+
+  users:
+    image: braydenwongcode/restaurant-users:latest
+    # build:
+    #   context: ./Users/
+    #   dockerfile: dockerfile
+    # env_file:
+    #   - ./users/src/config/.env.config
+    networks:
+      - dash
+    deploy:
+      replicas: 2
+    restart: always
+    
+  restaurants:
+    image: braydenwongcode/restaurant-restaurants:latest
+    # build:
+    #   context: ./Restaurant/
+    #   dockerfile: dockerfile
+    # env_file:
+    #   - ./restaurant/src/config/.env.config
+    networks:
+      - dash
+    deploy:
+      replicas: 2
+    restart: always
+
+  inventory:
+    image: braydenwongcode/restaurant-inventory:latest
+    # build:
+    #   context: ./Inventory/
+    #   dockerfile: dockerfile
+    # env_file:
+    #   - ./inventory/src/config/.env.config
+    networks:
+      - dash
+    deploy:
+      replicas: 3
+    restart: always
+
+  orders:
+    image: braydenwongcode/restaurant-orders:latest
+    # build:
+    #   context: ./Orders/
+    #   dockerfile: dockerfile
+    # env_file:
+    #   - ./orders/src/config/.env
+    networks:
+      - dash
+    deploy:
+      replicas: 3
+    restart: always
+  
+  frontend:
+    image: paco1232dsq/frontend:latest
+    networks:
+      - dash
+    ports: 
+    - 3000:3000
+    stdin_open: true
+    tty: true
     restart: always
 
 volumes:
@@ -67,53 +154,3 @@ volumes:
     external: true
   orders:
     external: true
-  # user-api:
-  #   # image: braydenwongcode/restaurant-dash-users:latest
-  #   build:
-  #     context: ./Users/
-  #     dockerfile: dockerfile
-  #   networks:
-  #     - dash
-  #   deploy:
-  #     replicas: 1
-  #   restart: always
-
-  # restaurant-api:
-  #   # image: braydenwongcode/restaurant-dash-restaurants:latest
-  #   build:
-  #     context: ./Restaurants/
-  #     dockerfile: dockerfile
-  #   networks:
-  #     - dash
-  #   deploy:
-  #     replicas: 1
-  #   restart: always
-
-  # inventory-api:
-  #   # image: braydenwongcode/restaurant-dash-inventory:latest
-  #   build:
-  #     context: ./Inventory/
-  #     dockerfile: dockerfile
-  #   networks:
-  #     - dash
-  #   deploy:
-  #     replicas: 1
-  #   restart: always
-
-  # gateway:
-  #   # image: braydenwongcode/restaurant-dash-gateway:latest
-  #   build:
-  #     context: ./gateway/
-  #     dockerfile: dockerfile
-  #   networks:
-  #     - dash
-  #   restart: always
-
-  # eureka:
-  #   # image: braydenwongcode/restaurant-dash-eureka:latest
-  #   build:
-  #     context: ./eureka/
-  #     dockerfile: dockerfile
-  #   networks:
-  #     - dash
-  #   restart: always

@@ -48,7 +48,7 @@ class Inventory extends React.Component {
     async getInventory(){
         var req = window.location.search.split("?id=");
         console.log(req[1]);
-        let res = await axios("http://192.168.1.6:3500/inventory", {
+        let res = await axios("http://localhost:3500/inventory", {
             method: "GET",
             params: {id:req[1]},
         });
@@ -83,7 +83,7 @@ class Inventory extends React.Component {
          
         var req = window.location.search.split("?id=");
         console.log(req[1]);
-        let res = await axios("http://192.168.1.6:3500/updateinventory", {
+        let res = await axios("http://localhost:3500/updateinventory", {
             method: "PATCH",
             params: {id:req[1]},
             data: {
@@ -96,7 +96,7 @@ class Inventory extends React.Component {
        let ingredients = this.objs;
         var req = window.location.search.split("?id=");
         console.log(req[1]);
-        let res = await axios("http://192.168.1.6:3500/updateinventory", {
+        let res = await axios("http://localhost:3500/updateinventory", {
             method: "PATCH",
             params: {id:req[1]},
             data: {

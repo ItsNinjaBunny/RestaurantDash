@@ -3,7 +3,6 @@ import { mongo } from '../config/config';
 import license from '../interfaces/License';
 import Recipe from '../interfaces/Item';
 import { Restaurant } from '../interfaces/Restaurant';
-import Item_Menu from '../interfaces/Item';
 
 const client = new MongoClient(mongo.url, mongo.options);
 const db = client.db(mongo.database);
@@ -28,7 +27,12 @@ const initRestaurant = async(restaurant: Restaurant) => {
 }
 
 const getRestaurantById = async(id: string) => {
-    return await collections.restaurants.findOne({ _id : id }) as Restaurant;
+    return await collections.restaurants.findOne({ _id : new ObjectId(id) }) as Restaurant;
+}
+
+const returnId = async(id: string) => {
+    return await collections.restaurants.findOne({ owner: id }, { projection : { _id: 1 }}) as Restaurant;
+
 }
 
 const addRecipe = async(id: string, recipe: Recipe) => {
@@ -36,12 +40,6 @@ const addRecipe = async(id: string, recipe: Recipe) => {
         owner : id
     }, { $addToSet : { menu_items : recipe }});
 }
-
-const findCuisine = async(cuisine: string) => {
-    return await collections.restaurants.find({
-        menu_items : { $elemMatch : { cuisine : { $regex: cuisine, $options : '$i' }}}})
-            .project({ _id : 1, 'menu_items.ingredients' : 0 }).sort({ name : 1 }).toArray();
-};
 
 const getRestaurantByItem = async(item: string, restaurant: string) => {
     return await collections.restaurants.find({
@@ -71,4 +69,22 @@ const getMenuItems = async() => {
     return await collections.restaurants.find({}).toArray() as Restaurant[];
 }
 
-export default { initRestaurant, addRecipe, findCuisine, getRestaurantByItem, updateDish, getRestaurantById, getDishes, getMenuItems };
+const query = async(type: string, keyword: string) => {
+    switch(type) {
+        case 'Restaurant':
+            return await collections.restaurants.find({
+                name : { $regex: keyword, $options: '$i' }
+            }).toArray() as Restaurant[];
+        case 'Item':
+            return await collections.restaurants.find({
+                'menu_items.dish_name' : { $regex: keyword, $options: '$i' }
+            }).project({ _id: 0, menu_items: 1}).toArray() as Recipe[];
+        case 'Cuisine':
+            return await collections.restaurants.find({
+                "menu_items.cuisine" : { $regex: keyword, $options: '$i' }
+            }).toArray() as Restaurant[];
+    }
+}
+
+export default { initRestaurant, addRecipe, getRestaurantByItem, updateDish, getRestaurantById,
+    getDishes, getMenuItems, returnId, query };

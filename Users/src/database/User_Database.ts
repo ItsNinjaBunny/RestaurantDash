@@ -1,4 +1,4 @@
-import { ListCollectionsCursor, MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import { mongo } from '../config/config';
 import { user } from '../interfaces/User';
 import login from '../interfaces/Credentials';
@@ -9,6 +9,8 @@ const collection = {
     user : db.collection(mongo.collections.users),
     tokens : db.collection(mongo.collections.tokens)
 };
+
+client.connect();
 
 const register = async(user: user) => {
     client.connect();

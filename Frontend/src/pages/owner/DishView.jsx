@@ -28,7 +28,7 @@ class DishView extends React.Component {
 async getDishes(){
     var req = window.location.search.split("?id=");
     console.log(req[1]);
-    let res = await axios("http://192.168.1.6:3500/restaurants/dishes", {
+    let res = await axios("http://localhost:3500/restaurants/dishes", {
         method: "GET",
         params: {id:req[1]},
     });

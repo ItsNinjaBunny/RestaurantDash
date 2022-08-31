@@ -7,6 +7,8 @@ export const server = {
     secret : String(process.env.secret)
 }
 
+console.log(process.env.mongo_url);
+
 export const mongo = {
     url : String(process.env.mongo_url),
     database : String(process.env.mongo_database),

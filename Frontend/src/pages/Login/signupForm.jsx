@@ -59,7 +59,7 @@ const password_pattern = /^(?=.*[A-Z]){1,}(?=.*\d){1,}(?=.*[!@#$%^&*()\[\]{};:'"
       }else{
       
         console.log("helloa");
-        let res = await axios("http://192.168.1.6:3000/register", {
+        let res = await axios("http://localhost:3000/register", {
             method: "POST",
             data: {
                 name:name,
@@ -82,7 +82,7 @@ const password_pattern = /^(?=.*[A-Z]){1,}(?=.*\d){1,}(?=.*[!@#$%^&*()\[\]{};:'"
             setAddress("");
             setKey("");
             setEmail("")
-            window.location.href ="http://localhost:5000/Login";
+            window.location.href ="http://localhost:3001/Login";
         }
       }
 
